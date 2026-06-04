@@ -1,22 +1,25 @@
 # ──────────────────────────────────────────────────────────────
-# requirements.txt
-# IA Educativa — dependencias sin Firebase
+# requirements.txt  —  IA Educativa (compatible Windows/Linux)
 # ──────────────────────────────────────────────────────────────
 
 # Web framework
 Flask==2.3.3
 
-# Peticiones HTTP (YouTube scraping, etc.)
+# Peticiones HTTP (scraping YouTube, etc.)
 requests>=2.25.0,<3.0
 
-# Seguridad de contraseñas (ya viene con Flask/Werkzeug, se declara explícitamente)
+# Hash de contraseñas (incluido en Flask/Werkzeug, declarado explícitamente)
 Werkzeug>=2.3.0
 
-# Google Gemini AI
-google-generativeai>=0.3.2
+# Google Gemini AI — SDK unificado (nuevo)
+google-genai>=1.0.0
 
 # Carga de variables de entorno desde .env
 python-dotenv>=1.0.0
+
+# Servidor WSGI para Windows (Gunicorn no soporta Windows)
+# En Linux/Mac esta dependencia se instala pero no se usa (Flask usa Gunicorn o el built-in)
+waitress>=3.0.0
 
 # Herramientas de construcción
 setuptools>=65.0

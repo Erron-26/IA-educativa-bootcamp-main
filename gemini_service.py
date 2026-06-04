@@ -5,7 +5,8 @@ Genera preguntas dinámicas y evalúa respuestas
 
 import os
 import json
-import google.generativeai as genai
+from google import genai
+from google.genai import errors
 from typing import List, Dict, Any
 
 class GeminiService:
@@ -14,10 +15,9 @@ class GeminiService:
         self.api_key = os.getenv('GEMINI_API_KEY')
         if not self.api_key:
             raise ValueError("GEMINI_API_KEY no está configurada en las variables de entorno")
-        
-        genai.configure(api_key=self.api_key)
-        model_name = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
-        self.model = genai.GenerativeModel(model_name)
+
+        self.client = genai.Client(api_key=self.api_key)
+        self.model_name = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
     
     def generar_preguntas(self, tema: str, nivel_academico: str = "universidad", cantidad: int = 10) -> List[Dict[str, Any]]:
         """
@@ -97,7 +97,10 @@ class GeminiService:
         
         try:
             print(f"Enviando prompt a Gemini...")
-            response = self.model.generate_content(prompt)
+            response = self.client.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+            )
             print(f"Respuesta recibida de Gemini")
             
             # Limpiar la respuesta para extraer solo el JSON
@@ -190,7 +193,10 @@ class GeminiService:
             """
             
             try:
-                response = self.model.generate_content(prompt)
+                response = self.client.models.generate_content(
+                    model=self.model_name,
+                    contents=prompt,
+                )
                 content = response.text.strip()
                 
                 # Limpiar la respuesta

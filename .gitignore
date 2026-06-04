@@ -1,7 +1,5 @@
 # Archivos de credenciales y configuración sensible
-firebase-key.json
 *.json
-!datos.json
 
 # Archivos de Python
 __pycache__/

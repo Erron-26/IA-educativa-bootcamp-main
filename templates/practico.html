@@ -258,6 +258,30 @@
             transform: none;
             box-shadow: none;
         }
+
+        /* Botón volver al inicio — solo aparece al terminar la evaluación */
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(26,35,126,0.35);
+            margin-top: 8px;
+        }
+        .btn-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(26,35,126,0.45);
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -312,38 +336,69 @@
         "Preparando tu desafío personal...",
         "Analizando el nivel académico...",
         "Construyendo ejercicios adaptativos...",
-        "Casi listo..."
+        "Casi listo...",
+        "Diseñando preguntas personalizadas...",
+        "Afinando la dificultad...",
+        "Seleccionando los mejores ejemplos...",
+        "Puliendo las explicaciones...",
+        "Casi terminamos...",
+        "Un momento más..."
     ];
     let fraseIndex = 0;
     let fraseInterval;
+    let tiempoEspera = 0;
+    let modoLento = false;
+    let timeoutRotacion = null;
 
     function iniciarRotacionFrases() {
         const elementoFrase = document.getElementById('loadingPhrases');
         if (!elementoFrase) return;
         
         fraseInterval = setInterval(() => {
+            tiempoEspera += 3.5;
+
+            // A los 25s: pasar a "modo lento" (persistente, no se sobreescribe)
+            if (tiempoEspera > 55 && !modoLento) {
+                modoLento = true;
+                clearInterval(fraseInterval);
+                elementoFrase.style.opacity = 0;
+                timeoutRotacion = setTimeout(() => {
+                    elementoFrase.textContent = "La IA está tardando más de lo normal, por favor espera...";
+                    elementoFrase.style.color = "var(--warning-color)";
+                    elementoFrase.style.opacity = 1;
+                }, 300);
+                return;
+            }
+
+            if (modoLento) return;
+
             fraseIndex = (fraseIndex + 1) % frasesCarga.length;
             elementoFrase.style.opacity = 0;
-            setTimeout(() => {
+            timeoutRotacion = setTimeout(() => {
                 elementoFrase.textContent = frasesCarga[fraseIndex];
                 elementoFrase.style.opacity = 1;
             }, 300);
-        }, 2500);
+        }, 3500);
     }
 
     function detenerRotacionFrases() {
         if (fraseInterval) clearInterval(fraseInterval);
+        if (timeoutRotacion) clearTimeout(timeoutRotacion);
     }
 
-    // Mostrar skeleton inmediatamente y cargar preguntas de forma asíncrona
     document.addEventListener('DOMContentLoaded', () => {
-        // Mostrar skeleton loading
         document.getElementById('skeletonContainer').style.display = 'block';
         document.getElementById('questionsContainer').style.display = 'none';
-        
+
+        tiempoEspera = 0;
+        modoLento = false;
+        fraseIndex = 0;
+        const elementoFrase = document.getElementById('loadingPhrases');
+        if (elementoFrase) {
+            elementoFrase.style.color = "var(--primary-color)";
+        }
         iniciarRotacionFrases();
-        
-        // Cargar preguntas de forma asíncrona
+
         cargarPreguntas();
     });
 
@@ -517,6 +572,19 @@
                 document.getElementById('statTotal').textContent = total;
                 const stats = document.getElementById('resultStats');
                 stats.style.display = 'flex';
+
+                // Ocultar "Evaluar Respuestas" y mostrar "Volver al Inicio"
+                const btnEvaluar = document.querySelector('.btn-evaluate');
+                if (btnEvaluar) btnEvaluar.style.display = 'none';
+
+                const actionsDiv = document.querySelector('.evaluation-actions');
+                if (actionsDiv && !actionsDiv.querySelector('.btn-home')) {
+                    const btnVolver = document.createElement('a');
+                    btnVolver.href = '/';
+                    btnVolver.className = 'btn-home';
+                    btnVolver.innerHTML = '🏠 Volver al Inicio';
+                    actionsDiv.appendChild(btnVolver);
+                }
             } else {
                 alert('Error al evaluar: '+resultado.error);
             }
