@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IA Educativa - Estadística</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="user-info">
+            <h1>IA Educativa - Estadística</h1>
+            <div class="user-controls">
+                <span>Bienvenido, {{ nombre }}</span>
+                <a href="{{ url_for('perfil') }}" class="btn btn-primary">Mi Perfil</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Cerrar Sesión</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-success">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+
+        <div class="form-container">
+            <h1>¡Comienza tu aprendizaje!</h1>
+            <p class="text-center mb-4" style="color: var(--gray-600);">Selecciona un tema y tu estilo de aprendizaje preferido</p>
+
+            <form method="POST" id="learningForm">
+
+                <div class="form-section">
+                    <label>Tema de estudio</label>
+                    <select name="tema" required>
+                        {% for t in temas %}
+                            <option value="{{ t }}">{{ t }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-section">
+                    <label>Estilo de aprendizaje</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                        <label class="style-option" style="cursor: pointer; border: 2px solid var(--gray-200); padding: 20px; border-radius: var(--border-radius); text-align: center; transition: var(--transition);">
+                            <input type="radio" name="estilo" value="Visual" required style="display: none;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">👁️</div>
+                            <div style="font-weight: 600; color: var(--gray-800);">Visual</div>
+                            <div style="font-size: 0.9rem; color: var(--gray-600); margin-top: 5px;">Videos y gráficos</div>
+                        </label>
+                        <label class="style-option" style="cursor: pointer; border: 2px solid var(--gray-200); padding: 20px; border-radius: var(--border-radius); text-align: center; transition: var(--transition);">
+                            <input type="radio" name="estilo" value="Práctico" required style="display: none;">
+                            <div style="font-size: 2rem; margin-bottom: 10px;">✏️</div>
+                            <div style="font-weight: 600; color: var(--gray-800);">Práctico</div>
+                            <div style="font-size: 0.9rem; color: var(--gray-600); margin-top: 5px;">Ejercicios y práctica</div>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Continuar</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('learningForm').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = 'Cargando...';
+        });
+    </script>
+</body>
+</html>

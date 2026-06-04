@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modo Visual - {{ tema }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        .video-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+        .video-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-xl);
+        }
+        .video-card iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+        .video-info {
+            padding: 20px;
+        }
+        .video-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .welcome-section {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+        }
+        .welcome-section h2 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        .topic-badge {
+            display: inline-block;
+            background: var(--accent-gradient);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            margin: 10px 0;
+        }
+        .intro-text {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin: 20px 0;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .section-title {
+            text-align: center;
+            margin: 40px 0 30px 0;
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="welcome-section">
+        <h2>👋 ¡Hola {{ nombre }}!</h2>
+        <div class="topic-badge">{{ tema }}</div>
+        <p class="intro-text">{{ introduccion }}</p>
+        <div class="action-buttons">
+            <a href="{{ url_for('practico', nombre=nombre, tema=tema) }}" class="btn btn-success">
+                🧠 Realizar Ejercicio
+            </a>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                🔙 Volver al Inicio
+            </a>
+        </div>
+    </div>
+
+    <h2 class="section-title">🎥 Videos Educativos</h2>
+    <div class="video-container">
+        {% for titulo, link in videos %}
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/{{ link.split('v=')[-1] }}"
+                        allowfullscreen
+                        loading="lazy">
+                </iframe>
+                <div class="video-info">
+                    <div class="video-title">{{ titulo }}</div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="action-buttons" style="margin-top: 40px;">
+        <a href="{{ url_for('practico', nombre=nombre, tema=tema) }}" class="btn btn-primary">
+            ✏️ Continuar con Ejercicios
+        </a>
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            🏠 Ir al Inicio
+        </a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# ──────────────────────────────────────────────────────────────
+# requirements.txt
+# IA Educativa — dependencias sin Firebase
+# ──────────────────────────────────────────────────────────────
+
+# Web framework
+Flask==2.3.3
+
+# Peticiones HTTP (YouTube scraping, etc.)
+requests>=2.25.0,<3.0
+
+# Seguridad de contraseñas (ya viene con Flask/Werkzeug, se declara explícitamente)
+Werkzeug>=2.3.0
+
+# Google Gemini AI
+google-generativeai>=0.3.2
+
+# Herramientas de construcción
+setuptools>=65.0

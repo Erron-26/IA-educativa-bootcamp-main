@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrarse - IA Educativa</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>¡Únete a nosotros!</h1>
+            
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="alert alert-error">{{ messages[0] }}</div>
+              {% endif %}
+            {% endwith %}
+
+            <form method="POST" action="{{ url_for('register') }}" id="registerForm">
+                <div class="form-section">
+                    <h3>Información de Acceso</h3>
+                    <label>Correo electrónico</label>
+                    <input type="email" name="email" placeholder="tu@email.com" required>
+
+                    <label>Contraseña</label>
+                    <input type="password" name="password" placeholder="Mínimo 6 caracteres" required>
+
+                    <label>Confirmar contraseña</label>
+                    <input type="password" name="confirm_password" placeholder="Repite tu contraseña" required>
+                </div>
+
+                <div class="form-section">
+                    <label>Nombre completo</label>
+                    <input type="text" name="nombre" placeholder="Tu nombre completo" required>
+
+                    <label>Edad</label>
+                    <input type="number" name="edad" placeholder="Tu edad" min="10" max="100" required>
+
+                    <label>Nivel educativo</label>
+                    <select name="nivel_educativo" required>
+                        <option value="">Selecciona tu nivel</option>
+                        <option value="secundaria">Secundaria</option>
+                        <option value="bachillerato">Bachillerato</option>
+                        <option value="universidad">Universidad</option>
+                        <option value="posgrado">Posgrado</option>
+                        <option value="otro">Otro</option>
+                    </select>
+
+                    <!-- Interés académico oculto -->
+                    <input type="hidden" name="intereses" value="estadistica">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Crear Cuenta</button>
+            </form>
+
+            <div class="auth-links">
+                <p>¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión aquí</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            const submitBtn = this.querySelector('button[type="submit"]');
+            submitBtn.classList.add('loading');
+            submitBtn.innerHTML = 'Creando cuenta...';
+        });
+    </script>
+</body>
+</html>

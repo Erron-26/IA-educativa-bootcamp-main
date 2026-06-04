@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - IA Educativa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        h1 {
+            color: #333;
+            margin: 0;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .profile-section {
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .profile-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .profile-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .profile-item label {
+            display: block;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .profile-item span {
+            color: #333;
+            font-size: 1.1rem;
+        }
+        .progress-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .progress-item {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e1e5e9;
+        }
+        .progress-item h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .progress-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+        }
+        .stat-label {
+            color: #666;
+        }
+        .stat-value {
+            font-weight: 600;
+            color: #333;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .no-progress {
+            text-align: center;
+            padding: 40px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .no-progress h3 {
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .no-progress p {
+            color: #999;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="user-info">
+            <h1>Mi Perfil</h1>
+            <div>
+                <a href="{{ url_for('index') }}" class="btn btn-primary">Volver al Inicio</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-secondary">Cerrar Sesión</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert alert-success">{{ messages[0] }}</div>
+          {% endif %}
+        {% endwith %}
+
+        {% if student_data %}
+        <div class="profile-section">
+            <h2>Información Personal</h2>
+            <div class="profile-grid">
+                <div class="profile-item">
+                    <label>Nombre</label>
+                    <span>{{ student_data.nombre }}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Email</label>
+                    <span>{{ student_data.email }}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Edad</label>
+                    <span>{{ student_data.edad }} años</span>
+                </div>
+                <div class="profile-item">
+                    <label>Nivel educativo</label>
+                    <span>{{ student_data.nivel_educativo.title() }}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Intereses</label>
+                    <span>{{ student_data.intereses.title() }}</span>
+                </div>
+                <div class="profile-item">
+                    <label>Miembro desde</label>
+                    <span>{{ student_data.fecha_registro[:10] }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="profile-section">
+            <h2>Progreso de Aprendizaje</h2>
+            {% if student_data.progreso %}
+                <div class="progress-grid">
+                    {% for tema, progreso in student_data.progreso.items() %}
+                    <div class="progress-item">
+                        <h3>{{ tema }}</h3>
+                        <div class="progress-stats">
+                            <div class="stat">
+                                <span class="stat-label">Ejercicios completados</span>
+                                <span class="stat-value">{{ progreso.ejercicios_completados }}</span>
+                            </div>
+                            <div class="stat">
+                                <span class="stat-label">Último acceso</span>
+                                <span class="stat-value">
+                                    {% if progreso.ultimo_acceso %}
+                                        {{ progreso.ultimo_acceso.fecha[:10] }}
+                                    {% else %}
+                                        No hay registros
+                                    {% endif %}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-progress">
+                    <div style="font-size: 3rem; margin-bottom: 20px;">📚</div>
+                    <h3>No hay progreso registrado aún</h3>
+                    <p>¡Comienza a estudiar para ver tu progreso aquí!</p>
+                    <a href="{{ url_for('index') }}" class="btn btn-primary">Comenzar a Estudiar</a>
+                </div>
+            {% endif %}
+        </div>
+        {% else %}
+        <div class="alert alert-error">
+            No se pudieron cargar los datos del perfil. Por favor, intenta de nuevo.
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

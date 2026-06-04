@@ -1,0 +1,28 @@
+# render.yaml — Configuración de despliegue en Render.com
+# ─────────────────────────────────────────────────────────
+# IMPORTANTE: el disco persistente (/data) garantiza que la base
+# de datos SQLite sobreviva a los reinicios y redespliegues.
+
+services:
+  - type: web
+    name: ia-educativa
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: FLASK_DEBUG
+        value: "0"
+      - key: FLASK_SECRET_KEY
+        generateValue: true          # Render genera una clave aleatoria segura
+      - key: DB_PATH
+        value: /data/educativa.db    # Ruta dentro del disco persistente
+      - key: GEMINI_API_KEY
+        sync: false                  # Lo configuras tú manualmente en el dashboard
+
+    # Disco persistente: SQLite se guarda aquí entre deployments
+    disk:
+      name: db-data
+      mountPath: /data
+      sizeGB: 1

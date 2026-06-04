@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluación Práctica - {{ tema }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ================= Skeleton Loading ================= */
+        .skeleton {
+            background: var(--gray-200);
+            border-radius: var(--border-radius);
+            position: relative;
+            overflow: hidden;
+        }
+        .skeleton::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -150px;
+            height: 100%;
+            width: 150px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: loading 1.2s infinite;
+        }
+        @keyframes loading {
+            0% { left: -150px; }
+            50% { left: 100%; }
+            100% { left: 100%; }
+        }
+        .skeleton-question {
+            margin: 25px 0;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            background: var(--gray-100);
+        }
+
+        /* Overlay de evaluación */
+        .evaluating-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            border-radius: var(--border-radius-lg);
+        }
+        .evaluating-overlay .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid var(--gray-200);
+            border-top: 6px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg);}
+            100% { transform: rotate(360deg);}
+        }
+
+        /* Feedback inline */
+        .feedback {
+            margin-top: 12px;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .feedback.correct {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success-color);
+            border-left: 4px solid var(--success-color);
+        }
+        .feedback.incorrect {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+            border-left: 4px solid var(--danger-color);
+        }
+
+        /* ================= Mantener estilos originales ================= */
+        .evaluation-container {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 40px;
+            margin: 30px 0;
+            box-shadow: var(--shadow-lg);
+        }
+        .evaluation-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .evaluation-header h2 {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        .topic-badge {
+            display: inline-block;
+            background: var(--accent-gradient);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+        }
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        .result-stats .stat {
+            background: var(--gray-100);
+            border-radius: var(--border-radius);
+            padding: 8px 12px;
+            border-left: 4px solid var(--gray-300);
+        }
+        .result-stats .good { border-left-color: var(--success-color); color: var(--success-color); }
+        .result-stats .bad { border-left-color: var(--danger-color); color: var(--danger-color); }
+        .result-stats .total { border-left-color: var(--primary-color); color: var(--primary-color); }
+        .progress-bar {
+            background: var(--gray-200);
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: var(--primary-gradient);
+            height: 100%;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+        .question-item {
+            background: var(--gray-50);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            margin: 25px 0;
+            border-left: 4px solid var(--primary-color);
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .question-number {
+            background: var(--primary-color);
+            color: var(--white);
+            padding: 8px 15px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .question-type {
+            background: var(--accent-color);
+            color: var(--white);
+            padding: 6px 12px;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 20px;
+        }
+        .options-container {
+            margin: 20px 0;
+        }
+        .option {
+            display: block;
+            margin: 12px 0;
+            padding: 15px 20px;
+            background: var(--white);
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+        }
+        .option:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .option input[type="radio"] {
+            display: none;
+        }
+        .option.selected {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .option.selected::before {
+            content: '✓';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .open-response {
+            width: 100%;
+            min-height: 100px;
+            padding: 15px;
+            border: 2px solid var(--gray-200);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            transition: var(--transition);
+        }
+        .open-response:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        .evaluation-actions {
+            text-align: center;
+            margin: 40px 0;
+            padding: 30px 0;
+            border-top: 2px solid var(--gray-200);
+        }
+        .btn-evaluate {
+            background: var(--primary-gradient);
+            color: var(--white);
+            padding: 15px 40px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-evaluate:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        .btn-evaluate:disabled {
+            background: var(--gray-400);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="evaluation-container">
+
+        <div class="evaluation-header">
+            <h2>📝 Evaluación Práctica</h2>
+            <div class="topic-badge">{{ tema }}</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p>Responde todas las preguntas y presiona "Evaluar" al final</p>
+            <div id="resultStats" class="result-stats" style="display:none;">
+                <div class="stat good">Buenas: <span id="statBuenas">0</span></div>
+                <div class="stat bad">Malas: <span id="statMalas">0</span></div>
+                <div class="stat total">Total: <span id="statTotal">0</span></div>
+            </div>
+        </div>
+
+        <!-- Skeleton Loading -->
+        <div id="skeletonContainer">
+            <div id="loadingPhrases" style="text-align: center; font-size: 1.2rem; font-weight: 600; color: var(--primary-color); margin-bottom: 20px; min-height: 30px; transition: opacity 0.3s ease;">
+                Generando conocimiento...
+            </div>
+            {% for _ in range(10) %}
+            <div class="skeleton-question">
+                <div class="skeleton" style="width: 120px; height: 20px; margin-bottom: 15px;"></div>
+                <div class="skeleton" style="width: 80%; height: 16px; margin-bottom: 10px;"></div>
+                <div class="skeleton" style="width: 90%; height: 16px; margin-bottom: 10px;"></div>
+                <div class="skeleton" style="width: 70%; height: 16px;"></div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Contenedor real -->
+        <div id="questionsContainer" style="display:none;">
+            <form id="evaluationForm">
+                <!-- Las preguntas se cargarán dinámicamente aquí -->
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    let preguntas = [];
+    const frasesCarga = [
+        "Generando conocimiento...",
+        "Calculando probabilidades...",
+        "Ajustando la curva de aprendizaje...",
+        "Consultando los oráculos de la IA...",
+        "Preparando tu desafío personal...",
+        "Analizando el nivel académico...",
+        "Construyendo ejercicios adaptativos...",
+        "Casi listo..."
+    ];
+    let fraseIndex = 0;
+    let fraseInterval;
+
+    function iniciarRotacionFrases() {
+        const elementoFrase = document.getElementById('loadingPhrases');
+        if (!elementoFrase) return;
+        
+        fraseInterval = setInterval(() => {
+            fraseIndex = (fraseIndex + 1) % frasesCarga.length;
+            elementoFrase.style.opacity = 0;
+            setTimeout(() => {
+                elementoFrase.textContent = frasesCarga[fraseIndex];
+                elementoFrase.style.opacity = 1;
+            }, 300);
+        }, 2500);
+    }
+
+    function detenerRotacionFrases() {
+        if (fraseInterval) clearInterval(fraseInterval);
+    }
+
+    // Mostrar skeleton inmediatamente y cargar preguntas de forma asíncrona
+    document.addEventListener('DOMContentLoaded', () => {
+        // Mostrar skeleton loading
+        document.getElementById('skeletonContainer').style.display = 'block';
+        document.getElementById('questionsContainer').style.display = 'none';
+        
+        iniciarRotacionFrases();
+        
+        // Cargar preguntas de forma asíncrona
+        cargarPreguntas();
+    });
+
+    async function cargarPreguntas() {
+        try {
+            const response = await fetch('/generar_preguntas', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    tema: '{{ tema }}'
+                })
+            });
+            
+            const resultado = await response.json();
+            
+            if (resultado.success) {
+                // Actualizar el array de preguntas
+                preguntas.length = 0;
+                preguntas.push(...resultado.preguntas);
+                
+                // Renderizar preguntas dinámicamente
+                renderizarPreguntas(resultado.preguntas);
+                
+                // Ocultar skeleton y mostrar preguntas
+                detenerRotacionFrases();
+                document.getElementById('skeletonContainer').style.display = 'none';
+                document.getElementById('questionsContainer').style.display = 'block';
+                
+                updateProgress();
+            } else {
+                detenerRotacionFrases();
+                document.getElementById('loadingPhrases').textContent = 'Error al generar preguntas';
+                console.error('Error cargando preguntas:', resultado.error);
+                alert('Error generando preguntas: ' + resultado.error);
+            }
+        } catch (error) {
+            detenerRotacionFrases();
+            document.getElementById('loadingPhrases').textContent = 'Error de conexión';
+            console.error('Error de conexión:', error);
+            alert('Error de conexión al cargar preguntas');
+        }
+    }
+
+    function renderizarPreguntas(preguntasData) {
+        const form = document.getElementById('evaluationForm');
+        form.innerHTML = '';
+        
+        preguntasData.forEach((pregunta, index) => {
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-item';
+            questionDiv.setAttribute('data-question-id', pregunta.id);
+            
+            let optionsHtml = '';
+            if (pregunta.tipo === 'opcion_multiple' || pregunta.tipo === 'verdadero_falso') {
+                optionsHtml = '<div class="options-container">';
+                for (const [key, value] of Object.entries(pregunta.opciones)) {
+                    optionsHtml += `
+                        <label class="option" onclick="selectOption(this)">
+                            <input type="radio" name="pregunta_${pregunta.id}" value="${key}">
+                            <strong>${key}.</strong> ${value}
+                        </label>
+                    `;
+                }
+                optionsHtml += '</div>';
+            } else if (pregunta.tipo === 'respuesta_abierta') {
+                optionsHtml = `
+                    <textarea class="open-response" name="pregunta_${pregunta.id}" 
+                              placeholder="Escribe tu respuesta aquí..."></textarea>
+                `;
+            }
+            
+            const tipoTexto = pregunta.tipo === 'opcion_multiple' ? 'Opción Múltiple' :
+                            pregunta.tipo === 'verdadero_falso' ? 'Verdadero/Falso' : 'Respuesta Abierta';
+            
+            questionDiv.innerHTML = `
+                <div class="question-header">
+                    <span class="question-number">Pregunta ${pregunta.id}</span>
+                    <span class="question-type">${tipoTexto}</span>
+                </div>
+                <div class="question-text">${pregunta.pregunta}</div>
+                ${optionsHtml}
+                <div class="feedback" id="feedback_${pregunta.id}" style="display:none;"></div>
+            `;
+            
+            form.appendChild(questionDiv);
+        });
+        
+        // Agregar botón de evaluación
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'evaluation-actions';
+        actionsDiv.innerHTML = `
+            <button type="button" class="btn-evaluate" onclick="evaluarRespuestas()">
+                📊 Evaluar Respuestas
+            </button>
+        `;
+        form.appendChild(actionsDiv);
+    }
+
+    function selectOption(element) {
+        const questionContainer = element.closest('.question-item');
+        questionContainer.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+        element.classList.add('selected');
+        element.querySelector('input[type="radio"]').checked = true;
+        updateProgress();
+    }
+
+    function updateProgress() {
+        const totalQuestions = preguntas.length;
+        let answeredQuestions = 0;
+        preguntas.forEach(pregunta => {
+            const qid = `pregunta_${pregunta.id}`;
+            if (pregunta.tipo === 'respuesta_abierta') {
+                const val = document.querySelector(`textarea[name="${qid}"]`).value.trim();
+                if(val) answeredQuestions++;
+            } else {
+                if(document.querySelector(`input[name="${qid}"]:checked`)) answeredQuestions++;
+            }
+        });
+        document.getElementById('progressFill').style.width = (answeredQuestions/totalQuestions)*100 + '%';
+        const btn = document.querySelector('.btn-evaluate');
+        btn.disabled = answeredQuestions !== totalQuestions;
+    }
+
+    async function evaluarRespuestas() {
+        const btn = document.querySelector('.btn-evaluate');
+        btn.disabled = true;
+        btn.textContent = '🔄 Evaluando...';
+
+        const container = document.getElementById('questionsContainer');
+        const overlay = document.createElement('div');
+        overlay.className = 'evaluating-overlay';
+        overlay.innerHTML = '<div class="spinner"></div>';
+        container.style.position = 'relative';
+        container.appendChild(overlay);
+
+        try {
+            const respuestas = {};
+            preguntas.forEach(pregunta => {
+                const qid = `pregunta_${pregunta.id}`;
+                if(pregunta.tipo==='respuesta_abierta'){
+                    respuestas[pregunta.id] = document.querySelector(`textarea[name="${qid}"]`).value.trim();
+                } else {
+                    const sel = document.querySelector(`input[name="${qid}"]:checked`);
+                    respuestas[pregunta.id] = sel ? sel.value : '';
+                }
+            });
+
+            const response = await fetch('/evaluar_respuestas',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({tema:'{{ tema }}', preguntas, respuestas})
+            });
+            const resultado = await response.json();
+
+            if(resultado.success){
+                resultado.respuestas.forEach((r,i)=>{
+                    const fb = document.getElementById(`feedback_${preguntas[i].id}`);
+                    fb.style.display='flex';
+                    fb.className='feedback '+(r.correcta?'correct':'incorrect');
+                    fb.innerHTML=`${r.correcta?'✅':'❌'} ${r.explicacion}`;
+                });
+
+                // Mostrar estadísticas arriba: buenas, malas y total
+                const total = resultado.respuestas.length;
+                const buenas = resultado.respuestas.filter(r => r.correcta).length;
+                const malas = total - buenas;
+                document.getElementById('statBuenas').textContent = buenas;
+                document.getElementById('statMalas').textContent = malas;
+                document.getElementById('statTotal').textContent = total;
+                const stats = document.getElementById('resultStats');
+                stats.style.display = 'flex';
+            } else {
+                alert('Error al evaluar: '+resultado.error);
+            }
+
+        } catch(err){
+            console.error(err);
+            alert('Error de conexión');
+        } finally {
+            overlay.remove();
+            btn.disabled=false;
+            btn.textContent='📊 Evaluar Respuestas';
+        }
+    }
+</script>
+</body>
+</html>
