@@ -10,7 +10,7 @@ def buscar_videos_youtube(consulta: str, num: int = 5) -> List[Tuple[str, str]]:
             "User-Agent": (
                 "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/110.0 Safari/537.36"
+                "Chrome/120.0.0.0 Safari/537.36"
             )
         }
 
@@ -19,16 +19,28 @@ def buscar_videos_youtube(consulta: str, num: int = 5) -> List[Tuple[str, str]]:
         resp = requests.get(url, headers=headers, timeout=10)
         html = resp.text
 
+        # Intentar extraer IDs con dos patrones distintos
         video_ids = list(set(re.findall(r'"videoId":"([a-zA-Z0-9_-]{11})"', html)))
+        if not video_ids:
+            video_ids = list(set(re.findall(r'videoId\":\"([a-zA-Z0-9_-]{11})', html)))
 
         if not video_ids:
-            return [("Sin resultados", "No se encontraron videos.")]
+            return _videos_fallback(consulta)
 
         for vid in video_ids[:num]:
             link = f"https://www.youtube.com/watch?v={vid}"
-            resultados.append(("Video educativo encontrado", link))
+            resultados.append((f"Video sobre {consulta}", link))
 
         return resultados
 
     except Exception as e:
-        return [("Error", str(e))]
+        print(f"Error en búsqueda YouTube: {e}")
+        return _videos_fallback(consulta)
+
+
+def _videos_fallback(consulta: str) -> List[Tuple[str, str]]:
+    """Videos de respaldo cuando falla el scraping."""
+    return [
+        ("No se pudieron cargar videos automáticos", ""),
+        ("Intenta buscar manualmente en YouTube", "")
+    ]

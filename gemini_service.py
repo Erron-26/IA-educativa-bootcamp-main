@@ -16,8 +16,8 @@ class GeminiService:
             raise ValueError("GEMINI_API_KEY no está configurada en las variables de entorno")
         
         genai.configure(api_key=self.api_key)
-        # Usar el modelo más reciente disponible
-        self.model = genai.GenerativeModel('gemini-2.5-flash')
+        model_name = os.getenv('GEMINI_MODEL', 'gemini-2.5-flash')
+        self.model = genai.GenerativeModel(model_name)
     
     def generar_preguntas(self, tema: str, nivel_academico: str = "universidad", cantidad: int = 10) -> List[Dict[str, Any]]:
         """

@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Perfil - IA Educativa</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="user-info">
+        <div class="user-info glass-effect">
             <h1>Mi Perfil</h1>
             <div>
                 <a href="{{ url_for('index') }}" class="btn btn-primary">Volver al Inicio</a>
@@ -24,7 +24,7 @@
         {% endwith %}
 
         {% if student_data %}
-        <div class="profile-section">
+        <div class="profile-section glass-effect">
             <h2>Información Personal</h2>
             <div class="profile-grid">
                 <div class="profile-item">
@@ -54,7 +54,7 @@
             </div>
         </div>
 
-        <div class="profile-section">
+        <div class="profile-section glass-effect">
             <h2>Progreso de Aprendizaje</h2>
             {% if student_data.progreso %}
                 <div class="progress-grid">
@@ -69,7 +69,7 @@
                             <div class="stat">
                                 <span class="stat-label">Último acceso</span>
                                 <span class="stat-value">
-                                    {% if progreso.ultimo_acceso %}
+                                    {% if progreso.ultimo_acceso and progreso.ultimo_acceso.get('fecha') %}
                                         {{ progreso.ultimo_acceso.fecha[:10] }}
                                     {% else %}
                                         No hay registros

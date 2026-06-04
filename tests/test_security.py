@@ -12,8 +12,7 @@ from db_config import initialize_db
 def client():
     # Establecer la app en modo testing
     app.config['TESTING'] = True
-    app.config['WTF_CSRF_ENABLED'] = False
-    
+
     with app.test_client() as client:
         with app.app_context():
             # Asegurar la base de datos local

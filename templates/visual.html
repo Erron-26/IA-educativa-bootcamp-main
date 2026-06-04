@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modo Visual - {{ tema }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <style>
         .video-container {
             display: grid;
@@ -86,7 +86,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container glass-effect">
     <div class="welcome-section">
         <h2>👋 ¡Hola {{ nombre }}!</h2>
         <div class="topic-badge">{{ tema }}</div>
@@ -105,10 +105,19 @@
     <div class="video-container">
         {% for titulo, link in videos %}
             <div class="video-card">
-                <iframe src="https://www.youtube.com/embed/{{ link.split('v=')[-1] }}"
+                {% if link and 'v=' in link %}
+                <iframe src="https://www.youtube.com/embed/{{ link.split('v=')[-1].split('&')[0] }}"
                         allowfullscreen
                         loading="lazy">
                 </iframe>
+                {% else %}
+                <div class="video-info">
+                    <div style="padding: 40px; text-align: center; color: var(--gray-500);">
+                        <div style="font-size: 3rem; margin-bottom: 15px;">🎬</div>
+                        <p>{{ titulo }}</p>
+                    </div>
+                </div>
+                {% endif %}
                 <div class="video-info">
                     <div class="video-title">{{ titulo }}</div>
                 </div>

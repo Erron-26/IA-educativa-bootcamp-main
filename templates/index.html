@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IA Educativa - Estadística</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <div class="user-info">
+        <div class="user-info glass-effect">
             <h1>IA Educativa - Estadística</h1>
             <div class="user-controls">
                 <span>Bienvenido, {{ nombre }}</span>
@@ -24,7 +24,7 @@
           {% endif %}
         {% endwith %}
 
-        <div class="form-container">
+        <div class="form-container glass-effect">
             <h1>¡Comienza tu aprendizaje!</h1>
             <p class="text-center mb-4" style="color: var(--gray-600);">Selecciona un tema y tu estilo de aprendizaje preferido</p>
 

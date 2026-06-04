@@ -15,5 +15,8 @@ Werkzeug>=2.3.0
 # Google Gemini AI
 google-generativeai>=0.3.2
 
+# Carga de variables de entorno desde .env
+python-dotenv>=1.0.0
+
 # Herramientas de construcción
 setuptools>=65.0

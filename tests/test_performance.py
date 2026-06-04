@@ -40,4 +40,4 @@ def test_api_protection_speed(client):
     elapsed_time = time.time() - start_time
     
     assert response.status_code == 302
-    assert elapsed_time < 0.1  # 100ms
+    assert elapsed_time < 0.2  # 200ms

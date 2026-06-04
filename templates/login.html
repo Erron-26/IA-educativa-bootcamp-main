@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - IA Educativa</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css', v='2') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container" style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 90vh;">
-        <div class="form-container">
+        <div class="form-container glass-effect">
             <div style="font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gray-500); text-align: center; margin-bottom: 12px;">Módulo / Autenticación</div>
             <h1>¡Bienvenido de vuelta!</h1>
             
@@ -36,7 +36,9 @@
             <div class="auth-links">
                 <p style="font-size: 14px; color: var(--gray-600);">¿No tienes cuenta? <a href="{{ url_for('register') }}">Regístrate aquí</a></p>
             </div>
-        </div>
+            <div class="quote" style="margin-top: 30px; text-align: center; font-style: italic; color: var(--gray-600);">
+    "La educación es el arma más poderosa que puedes usar para cambiar el mundo." – Nelson Mandela
+</div>        </div>
 
         <div style="max-width: 480px; text-align: center; margin-top: 24px; padding: 0 20px; font-family: 'Playfair Display', serif; font-style: italic; color: var(--gray-500); font-size: 15px;">
             "La estadística es la gramática de la ciencia."

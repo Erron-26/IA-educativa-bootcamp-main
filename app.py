@@ -1,7 +1,10 @@
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from busquedas import buscar_videos_youtube
 from temas import temas
-from ejercicios import generar_ejercicio_aleatorio
 from db_config import FirebaseAuth, StudentData
 from gemini_service import GeminiService
 import random
@@ -9,7 +12,7 @@ import json
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = "clave_secreta_demo"
+app.secret_key = os.getenv("FLASK_SECRET_KEY", "clave_secreta_demo")
 
 # Decorador para verificar autenticación
 def login_required(f):
@@ -114,7 +117,7 @@ def register():
         else:
             flash(f"Error al crear la cuenta: {result['error']}")
     
-    return render_template("register_simple.html")
+    return render_template("register.html")
 
 @app.route("/perfil")
 @login_required
