@@ -181,6 +181,28 @@ class StudentData:
             return {"success": False, "error": str(exc)}
 
     @staticmethod
+    def preguntas_ya_vistas(user_id: str, tema: str) -> set:
+        result = StudentData.get_student_data(user_id)
+        if not result["success"]:
+            return set()
+        data = result["data"]
+        return set(data.get("preguntas_vistas", {}).get(tema, []))
+
+    @staticmethod
+    def registrar_preguntas_vistas(user_id: str, tema: str, ids_vistos: list) -> dict:
+        result = StudentData.get_student_data(user_id)
+        if not result["success"]:
+            return result
+        data = result["data"]
+        data.setdefault("preguntas_vistas", {})
+        data["preguntas_vistas"].setdefault(tema, [])
+        existentes = set(data["preguntas_vistas"][tema])
+        for id_v in ids_vistos:
+            existentes.add(id_v)
+        data["preguntas_vistas"][tema] = list(existentes)
+        return StudentData.save_student_data(user_id, data)
+
+    @staticmethod
     def save_evaluation_history(user_id: str, evaluation_data: dict) -> dict:
         try:
             result = StudentData.get_student_data(user_id)

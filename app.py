@@ -26,6 +26,13 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "clave_secreta_demo")
 _gemini_service = None
 _youtube_cache = {}
 
+_temas_lista = temas["Estadística"]  # list[dict]
+_temas_por_nombre = {t["nombre"]: t for t in _temas_lista}
+
+
+def obtener_info_tema(tema_nombre: str) -> dict | None:
+    return _temas_por_nombre.get(tema_nombre)
+
 
 def get_gemini_service() -> GeminiService:
     global _gemini_service
@@ -64,7 +71,7 @@ def login():
         password = request.form.get("password")
 
         if not email or not password:
-            flash("Por favor completa todos los campos.")
+            flash("Por favor completa todos los campos.", "error")
             return redirect(url_for("login"))
 
         result = LocalAuth.login_user(email, password)
@@ -78,10 +85,10 @@ def login():
             if student_data["success"]:
                 session['student_data'] = student_data["data"]
 
-            flash("Inicio de sesión exitoso.")
+            flash("¡Bienvenido de vuelta! Sesión iniciada exitosamente.", "success")
             return redirect(url_for("index"))
         else:
-            flash(f"Error al iniciar sesión: {result['error']}")
+            flash(f"Error al iniciar sesión: {result['error']}", "error")
 
     return render_template("login.html")
 
@@ -99,26 +106,26 @@ def register():
 
         # ── Validar campos básicos ────────────────────────────────
         if not all([email, password, confirm_password, nombre, edad_str]):
-            flash("Por favor completa todos los campos.")
+            flash("Por favor completa todos los campos.", "error")
             return redirect(url_for("register"))
 
         if password != confirm_password:
-            flash("Las contraseñas no coinciden.")
+            flash("Las contraseñas no coinciden.", "error")
             return redirect(url_for("register"))
 
         if len(password) < 6:
-            flash("La contraseña debe tener al menos 6 caracteres.")
+            flash("La contraseña debe tener al menos 6 caracteres.", "error")
             return redirect(url_for("register"))
 
         # ── Validar edad y asignar nivel según criterios ──────────
         try:
             edad = int(edad_str)
         except ValueError:
-            flash("La edad debe ser un número válido.")
+            flash("La edad debe ser un número válido.", "error")
             return redirect(url_for("register"))
 
         if edad < 12:
-            flash("La edad mínima para registrarse es 12 años.")
+            flash("La edad mínima para registrarse es 12 años.", "error")
             return redirect(url_for("register"))
 
         # Clasificación automática por edad (validación del lado del servidor)
@@ -131,7 +138,7 @@ def register():
             # 18+ → el usuario elige; validar que llegó un valor permitido
             opciones_validas = {"universidad", "posgrado", "otro"}
             if nivel_educativo not in opciones_validas:
-                flash("Por favor selecciona tu nivel educativo.")
+                flash("Por favor selecciona tu nivel educativo.", "warning")
                 return redirect(url_for("register"))
 
         # ── Mapear nivel_educativo → nivel_academico (usado por Gemini) ──
@@ -165,12 +172,12 @@ def register():
             save_result = StudentData.save_student_data(user_id, student_data)
 
             if save_result["success"]:
-                flash("Cuenta creada exitosamente. Ahora puedes iniciar sesión.")
+                flash("¡Cuenta creada exitosamente! Ahora puedes iniciar sesión.", "success")
                 return redirect(url_for("login"))
             else:
-                flash(f"Error al guardar datos del estudiante: {save_result['error']}")
+                flash(f"Error al guardar datos del estudiante: {save_result['error']}", "error")
         else:
-            flash(f"Error al crear la cuenta: {result['error']}")
+            flash(f"Error al crear la cuenta: {result['error']}", "error")
 
     return render_template("register.html")
 
@@ -220,12 +227,11 @@ def index():
         tema  = request.form.get("tema")
         estilo = request.form.get("estilo")
 
-        temas_disponibles = temas["Estadística"]
         if not tema or not estilo:
             flash("⚠️ Por favor completa todos los campos.")
             return redirect(url_for("index"))
 
-        if tema not in temas_disponibles:
+        if tema not in _temas_por_nombre:
             flash("El tema seleccionado no es válido. Selecciona uno de la lista.")
             return redirect(url_for("index"))
 
@@ -234,7 +240,7 @@ def index():
         elif estilo == "Práctico":
             return redirect(url_for("practico", nombre=nombre_estudiante, tema=tema))
 
-    return render_template("index.html", nombre=nombre_estudiante, temas=temas["Estadística"])
+    return render_template("index.html", nombre=nombre_estudiante, temas=[t["nombre"] for t in _temas_lista])
 
 
 # ---------------------- VISUAL ------------------------
@@ -299,6 +305,7 @@ def practico():
 @login_required
 def generar_preguntas():
     """Generar preguntas de forma asíncrona."""
+    import time as _time
     try:
         data  = request.get_json()
         tema  = data.get('tema')
@@ -309,16 +316,80 @@ def generar_preguntas():
         user_id      = session.get('user')
         student_data = session.get('student_data')
         nivel_academico = "universidad"
+        intereses = None
 
-        if student_data and 'nivel_academico' in student_data:
-            nivel_academico = student_data['nivel_academico']
+        if student_data:
+            if 'nivel_academico' in student_data:
+                nivel_academico = student_data['nivel_academico']
+            intereses = student_data.get('intereses')
 
+        info_tema = obtener_info_tema(tema)
+        excluir_ids = StudentData.preguntas_ya_vistas(user_id, tema) if user_id else set()
+
+        # Verificar si hay banco disponible (para delay inteligente en el frontend)
+        from gemini_service import BancoPreguntas as _BP
+        _bp_check = _BP()
+        tiene_banco = _bp_check.hay_banco_para_tema(tema, nivel_academico)
+
+        t0 = _time.time()
         gemini_service = get_gemini_service()
-        preguntas = gemini_service.generar_preguntas(tema, nivel_academico, cantidad=10)
+        preguntas = gemini_service.generar_preguntas(
+            tema_nombre=tema,
+            nivel_academico=nivel_academico,
+            cantidad=10,
+            descripcion=info_tema["descripcion"] if info_tema else None,
+            conceptos_clave=info_tema["conceptos_clave"] if info_tema else None,
+            intereses=intereses,
+            excluir_ids=excluir_ids,
+        )
+        tiempo_ms = int((_time.time() - t0) * 1000)
 
-        session['preguntas_actuales'] = preguntas
+        # Determinar la fuente real de las preguntas
+        son_fallback = all(p.get("es_fallback") for p in preguntas)
+        alguna_real  = any(not p.get("es_fallback") for p in preguntas)
+        if son_fallback:
+            fuente = "fallback"
+        elif tiene_banco and tiempo_ms < 500:
+            fuente = "banco"
+        elif alguna_real and tiempo_ms > 500:
+            fuente = "gemini_live"
+        else:
+            fuente = "cache"
 
-        return jsonify({"success": True, "preguntas": preguntas})
+        # Banner de fallback: solo si TODAS las preguntas son fallback
+        # (preguntas del banco curado NO deben triggerear este banner)
+        todas_fallback = all(p.get("es_fallback") for p in preguntas)
+        alguna_real = any(not p.get("es_fallback") for p in preguntas)
+        mostrar_fallback = todas_fallback and not alguna_real
+
+        # Registrar IDs vistos — incluir TODAS las preguntas (banco y cache)
+        # para que el contador "X/20 preguntas vistas" funcione correctamente
+        ids_servidos = [p["id_estable"] for p in preguntas if p.get("id_estable")]
+        if ids_servidos and user_id:
+            StudentData.registrar_preguntas_vistas(user_id, tema, ids_servidos)
+
+        nuevos_ids = [i for i in ids_servidos if i not in excluir_ids]
+        vistas_total = len(excluir_ids) + len(nuevos_ids)
+
+        # Tamaño real del pool para este tema/nivel
+        from gemini_service import BancoPreguntas
+        _banco = BancoPreguntas()
+        pool_size = max(20, _banco.total_disponibles(tema, nivel_academico) + _banco.total_en_cache(tema, nivel_academico))
+        en_rotacion = vistas_total >= pool_size
+
+        return jsonify({
+            "success": True,
+            "preguntas": preguntas,
+            "fallback": mostrar_fallback,
+            "fuente": fuente,
+            "tiempo_ms": tiempo_ms,
+            "info_ronda": {
+                "vistas": vistas_total,
+                "total_pool": pool_size,
+                "en_rotacion": en_rotacion,
+                "nivel": nivel_academico,
+            },
+        })
 
     except Exception as e:
         print(f"Error generando preguntas: {e}")
@@ -328,7 +399,7 @@ def generar_preguntas():
 @app.route("/evaluar_respuestas", methods=["POST"])
 @login_required
 def evaluar_respuestas():
-    """Evaluar respuestas usando Gemini."""
+    """Evaluar respuestas localmente (cerradas) y mostrar respuestas sugeridas (abiertas/reflexión) sin usar la API."""
     try:
         data              = request.get_json()
         tema              = data.get('tema')
@@ -338,28 +409,47 @@ def evaluar_respuestas():
         if not all([tema, preguntas, respuestas_usuario]):
             return jsonify({"success": False, "error": "Datos incompletos"})
 
-        gemini_service     = get_gemini_service()
         respuestas_evaluadas = []
-        puntaje_total      = 0
+        puntaje_total_cerradas = 0
+        cantidad_cerradas = 0
 
         for pregunta in preguntas:
             pregunta_id      = pregunta['id']
             respuesta_usuario = respuestas_usuario.get(str(pregunta_id), '')
 
-            evaluacion = gemini_service.evaluar_respuesta(pregunta, respuesta_usuario)
+            tipo = pregunta.get("tipo", "opcion_multiple")
+            if tipo in ("opcion_multiple", "verdadero_falso"):
+                resp_correcta = pregunta.get("respuesta_correcta", "").strip().upper()
+                resp_usuario = respuesta_usuario.strip().upper()
+                es_correcta = resp_usuario == resp_correcta
 
-            resultado = {
-                "pregunta_id":      pregunta_id,
-                "respuesta_usuario": respuesta_usuario,
-                "correcta":         evaluacion["correcta"],
-                "puntaje":          evaluacion["puntaje"],
-                "explicacion":      evaluacion["explicacion"],
-            }
+                resultado = {
+                    "pregunta_id":      pregunta_id,
+                    "respuesta_usuario": respuesta_usuario,
+                    "correcta":         es_correcta,
+                    "puntaje":          1.0 if es_correcta else 0.0,
+                    "explicacion":      pregunta.get("explicacion", ""),
+                    "respuesta_correcta": pregunta.get("respuesta_correcta", "")
+                }
+                puntaje_total_cerradas += resultado["puntaje"]
+                cantidad_cerradas += 1
+            else:
+                # Pregunta abierta (Ejercicio de Reflexión)
+                resultado = {
+                    "pregunta_id":      pregunta_id,
+                    "respuesta_usuario": respuesta_usuario,
+                    "correcta":         None,  # No aplica calificación
+                    "puntaje":          None,
+                    "explicacion":      pregunta.get("explicacion", ""),
+                    "respuesta_correcta": pregunta.get("respuesta_correcta", "")
+                }
 
             respuestas_evaluadas.append(resultado)
-            puntaje_total += evaluacion["puntaje"]
 
-        puntaje_final = (puntaje_total / len(preguntas)) * 100
+        if cantidad_cerradas > 0:
+            puntaje_final = (puntaje_total_cerradas / cantidad_cerradas) * 100
+        else:
+            puntaje_final = 100.0  # Fallback si no hay preguntas cerradas
 
         user_id = session.get('user')
         if user_id:
@@ -368,7 +458,7 @@ def evaluar_respuestas():
                 "puntaje":                puntaje_final,
                 "fecha":                  datetime.now().isoformat(),
                 "preguntas_respondidas":  len(preguntas),
-                "respuestas_correctas":   sum(1 for r in respuestas_evaluadas if r["correcta"]),
+                "respuestas_correctas":   sum(1 for r in respuestas_evaluadas if r["correcta"] is True),
             }
 
             StudentData.update_student_progress(user_id, tema, ejercicio_completado=True)

@@ -126,35 +126,26 @@ def test_evaluar_respuestas_success_multiple_choice(client):
     register_and_login(client)
     preguntas = fake_preguntas()
     respuestas = {"1": "A", "2": "B", "3": "Concepto X"}
-    patcher, mock = mock_gemini_service()
-    with patcher:
-        mock.evaluar_respuesta.side_effect = [
-            {"correcta": True, "puntaje": 1, "explicacion": "OK"},
-            {"correcta": False, "puntaje": 0, "explicacion": "NO"},
-            {"correcta": True, "puntaje": 1, "explicacion": "OK"},
-        ]
-        response = client.post("/evaluar_respuestas", json={
-            "tema": "Probabilidad", "preguntas": preguntas, "respuestas": respuestas,
-        })
+    response = client.post("/evaluar_respuestas", json={
+        "tema": "Probabilidad", "preguntas": preguntas, "respuestas": respuestas,
+    })
     assert response.status_code == 200
     data = response.get_json()
     assert data["success"] is True
-    assert data["puntaje_final"] == pytest.approx(66.66, rel=0.01)
+    assert data["puntaje_final"] == 50.0  # 1/2 closed questions correct
     assert len(data["respuestas"]) == 3
+    assert data["respuestas"][0]["correcta"] is True
+    assert data["respuestas"][1]["correcta"] is False
+    assert data["respuestas"][2]["correcta"] is None
 
 
 def test_evaluar_respuestas_saves_history(client):
     register_and_login(client)
     preguntas = fake_preguntas()
     respuestas = {"1": "A", "2": "A", "3": "X"}
-    patcher, mock = mock_gemini_service()
-    with patcher:
-        mock.evaluar_respuesta.return_value = {
-            "correcta": True, "puntaje": 1, "explicacion": "OK"
-        }
-        response = client.post("/evaluar_respuestas", json={
-            "tema": "Estadística", "preguntas": preguntas, "respuestas": respuestas,
-        })
+    response = client.post("/evaluar_respuestas", json={
+        "tema": "Estadística", "preguntas": preguntas, "respuestas": respuestas,
+    })
     assert response.status_code == 200
 
     from db_config import StudentData
@@ -169,12 +160,11 @@ def test_evaluar_respuestas_saves_history(client):
 
 def test_evaluar_respuestas_handles_exception(client):
     register_and_login(client)
-    patcher, mock = mock_gemini_service()
-    with patcher:
-        mock.evaluar_respuesta.side_effect = Exception("Falla")
+    with patch("app.StudentData.update_student_progress", side_effect=Exception("Falla DB")):
         response = client.post("/evaluar_respuestas", json={
             "tema": "X", "preguntas": fake_preguntas(), "respuestas": {"1": "A", "2": "A", "3": "X"},
         })
     assert response.status_code == 200
     data = response.get_json()
     assert data["success"] is False
+    assert "Falla DB" in data["error"]

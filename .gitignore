@@ -1,5 +1,7 @@
 # Archivos de credenciales y configuración sensible
 *.json
+# Excepción: el banco de preguntas estático SÍ se versiona
+!data/banco_preguntas.json
 
 # Archivos de Python
 __pycache__/

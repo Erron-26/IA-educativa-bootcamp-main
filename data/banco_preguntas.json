@@ -1,0 +1,1615 @@
+{
+  "version": "2.0",
+  "temas": {
+    "Fundamentos y Análisis Descriptivo": {
+      "universidad": [
+        {
+          "id": 1,
+          "tipo": "opcion_multiple",
+          "pregunta": "Un investigador mide el nivel de satisfacción de estudiantes (Muy insatisfecho, Insatisfecho, Neutral, Satisfecho, Muy satisfecho). ¿Qué tipo de variable y escala de medición es?",
+          "opciones": {
+            "A": "Cuantitativa discreta, escala de intervalo",
+            "B": "Cualitativa, escala ordinal",
+            "C": "Cualitativa, escala nominal",
+            "D": "Cuantitativa continua, escala de razón"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La variable es cualitativa porque describe atributos, y es ordinal porque existe un orden lógico y jerárquico inherente a las categorías, aunque no se puedan medir las distancias exactas entre ellas.",
+          "id_estable": "ec56d3f65a72",
+          "es_fallback": false
+        },
+        {
+          "id": 2,
+          "tipo": "opcion_multiple",
+          "pregunta": "Al construir un histograma para una variable continua, ¿por qué es fundamental que las barras sean adyacentes?",
+          "opciones": {
+            "A": "Para ahorrar espacio en el gráfico",
+            "B": "Para representar la naturaleza continua de la variable y la continuidad de los intervalos",
+            "C": "Porque el ancho de las barras debe ser siempre igual a uno",
+            "D": "Para facilitar la suma de las frecuencias absolutas"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "En un histograma, la ausencia de espacios entre barras indica que la variable es continua, reflejando que no hay saltos entre los límites superiores de un intervalo y los inferiores del siguiente.",
+          "id_estable": "6d800d260730",
+          "es_fallback": false
+        },
+        {
+          "id": 3,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si la suma de las frecuencias relativas es 0.98 en una tabla de frecuencias, ¿qué conclusión es la más probable?",
+          "opciones": {
+            "A": "Los datos están mal recolectados",
+            "B": "Existe un error de redondeo en los cálculos",
+            "C": "La muestra es demasiado pequeña",
+            "D": "Es un resultado válido en estadística descriptiva"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La suma de las frecuencias relativas debe ser exactamente 1.0. Un valor de 0.98 indica que hubo una pérdida de precisión durante el redondeo de los decimales al calcular cada frecuencia.",
+          "id_estable": "663375ee1bc9",
+          "es_fallback": false
+        },
+        {
+          "id": 4,
+          "tipo": "opcion_multiple",
+          "pregunta": "Un estudio analiza la temperatura (Celsius) en 50 ciudades. ¿Cuál es el nivel de medición de esta variable?",
+          "opciones": {
+            "A": "Nominal",
+            "B": "Ordinal",
+            "C": "Intervalo",
+            "D": "Razón"
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "La escala de intervalo posee orden y distancias iguales entre valores, pero carece de un cero absoluto natural, ya que 0°C no significa ausencia de temperatura.",
+          "id_estable": "7d566ce4e38b",
+          "es_fallback": false
+        },
+        {
+          "id": 5,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si un polígono de frecuencias muestra una forma 'sesgada a la derecha', ¿qué implica esto sobre los datos?",
+          "opciones": {
+            "A": "La mayoría de los valores se concentran en el extremo derecho",
+            "B": "La mayoría de los valores se concentran en el extremo izquierdo y hay una 'cola' hacia la derecha",
+            "C": "Es una distribución normal perfecta",
+            "D": "La media es menor que la mediana"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El sesgo positivo o a la derecha significa que hay valores extremos altos que estiran la cola de la distribución hacia el lado derecho, dejando la mayor parte de la masa de datos a la izquierda.",
+          "id_estable": "257de4663baf",
+          "es_fallback": false
+        },
+        {
+          "id": 6,
+          "tipo": "opcion_multiple",
+          "pregunta": "Cuál de las siguientes afirmaciones sobre la población y la muestra es correcta?",
+          "opciones": {
+            "A": "La muestra debe ser siempre mayor al 50% de la población",
+            "B": "Un parámetro es una medida calculada sobre una muestra",
+            "C": "Un estadístico es una medida calculada sobre una muestra y estima un parámetro poblacional",
+            "D": "La población siempre es un conjunto finito de individuos"
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "Un estadístico es una función de los datos de la muestra. Su propósito principal es servir como estimador del parámetro poblacional, el cual es generalmente desconocido.",
+          "id_estable": "213af22028e1",
+          "es_fallback": false
+        },
+        {
+          "id": 7,
+          "tipo": "opcion_multiple",
+          "pregunta": "En una tabla de frecuencias, ¿qué representa la frecuencia absoluta acumulada?",
+          "opciones": {
+            "A": "El porcentaje de observaciones hasta ese punto",
+            "B": "El número total de observaciones que son menores o iguales al límite superior del intervalo actual",
+            "C": "La suma de todas las frecuencias relativas",
+            "D": "La diferencia entre el valor máximo y el mínimo"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La frecuencia absoluta acumulada suma las frecuencias de los intervalos anteriores con la del intervalo actual, indicando cuántos casos se han contabilizado hasta ese nivel de la variable.",
+          "id_estable": "11b38c068366",
+          "es_fallback": false
+        },
+        {
+          "id": 8,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si se desea comparar la distribución de dos grupos con diferentes tamaños de muestra, ¿qué medida es más adecuada?",
+          "opciones": {
+            "A": "Frecuencia absoluta",
+            "B": "Frecuencia relativa",
+            "C": "Frecuencia acumulada",
+            "D": "Amplitud del rango"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La frecuencia relativa (proporción o porcentaje) estandariza los datos, permitiendo comparar grupos de diferentes tamaños, ya que elimina el sesgo que introduce la diferencia en el número total de observaciones.",
+          "id_estable": "735534698dab",
+          "es_fallback": false
+        },
+        {
+          "id": 9,
+          "tipo": "opcion_multiple",
+          "pregunta": "Cuál de las siguientes variables es cuantitativa continua?",
+          "opciones": {
+            "A": "Número de hijos por familia",
+            "B": "Color de ojos",
+            "C": "Tiempo de reacción ante un estímulo",
+            "D": "Calificación en un examen (0 a 10)"
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "El tiempo de reacción puede tomar cualquier valor dentro de un intervalo (es medible con precisión infinita teórica), a diferencia de las variables discretas que se cuentan por unidades enteras.",
+          "id_estable": "cea9d2209989",
+          "es_fallback": false
+        },
+        {
+          "id": 10,
+          "tipo": "opcion_multiple",
+          "pregunta": "Al definir los intervalos de clase en un histograma, ¿qué sucede si el número de clases es excesivamente alto?",
+          "opciones": {
+            "A": "Se pierde detalle en la distribución",
+            "B": "El gráfico se vuelve demasiado 'ruidoso' y difícil de interpretar",
+            "C": "La suma de frecuencias relativas deja de ser 1",
+            "D": "Se convierte automáticamente en una variable cualitativa"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Demasiadas clases provocan que muchas de ellas tengan frecuencias muy bajas o nulas, lo que dispersa la información y oculta la tendencia general de la distribución.",
+          "id_estable": "8be464f0a56a",
+          "es_fallback": false
+        },
+        {
+          "id": 11,
+          "tipo": "verdadero_falso",
+          "pregunta": "La escala de razón es la única escala de medición que posee un cero absoluto, permitiendo realizar comparaciones de cociente (ej. 'el doble de').",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El cero absoluto en la escala de razón implica ausencia total de la propiedad medida, lo que permite decir que un valor es el doble o la mitad de otro, a diferencia de las escalas de intervalo.",
+          "id_estable": "d34aa83a8e79",
+          "es_fallback": false
+        },
+        {
+          "id": 12,
+          "tipo": "verdadero_falso",
+          "pregunta": "Un polígono de frecuencias se puede construir uniendo los límites inferiores de cada intervalo de clase.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El polígono de frecuencias se construye uniendo los puntos medios (marcas de clase) de cada intervalo de clase en la parte superior de las barras del histograma.",
+          "id_estable": "ccc23c511973",
+          "es_fallback": false
+        },
+        {
+          "id": 13,
+          "tipo": "verdadero_falso",
+          "pregunta": "En una variable cualitativa nominal, el orden de las categorías en una tabla de frecuencias no afecta la validez del análisis.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Como las variables nominales no tienen un orden intrínseco, cualquier ordenamiento en la tabla es arbitrario y no altera la información estadística contenida.",
+          "id_estable": "4af39b9d9f69",
+          "es_fallback": false
+        },
+        {
+          "id": 14,
+          "tipo": "verdadero_falso",
+          "pregunta": "Si una muestra es representativa, los estadísticos calculados siempre serán idénticos a los parámetros poblacionales.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Debido al error de muestreo, los estadísticos son estimaciones que varían de una muestra a otra; solo serían idénticos si se realizara un censo completo.",
+          "id_estable": "afb791b1b2d0",
+          "es_fallback": false
+        },
+        {
+          "id": 15,
+          "tipo": "verdadero_falso",
+          "pregunta": "La frecuencia relativa acumulada siempre debe terminar en 1.0 (o 100%) en la última clase.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Por definición, la última clase acumula la totalidad de las observaciones, por lo que la suma de todas las frecuencias relativas hasta ese punto debe ser la unidad.",
+          "id_estable": "4b1edb6fcd6a",
+          "es_fallback": false
+        },
+        {
+          "id": 16,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Dados los datos: 2, 4, 4, 5, 5, 5, 7, 8. Calcula la frecuencia absoluta y relativa del valor '5'.",
+          "opciones": null,
+          "respuesta_correcta": "Frecuencia absoluta = 3, Frecuencia relativa = 0.375",
+          "explicacion": "Hay 8 datos en total. El valor 5 aparece 3 veces. La frecuencia absoluta es 3 y la relativa es 3/8 = 0.375.",
+          "id_estable": "b41c05f089b3",
+          "es_fallback": false
+        },
+        {
+          "id": 17,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Explica brevemente la diferencia fundamental entre una variable discreta y una continua.",
+          "opciones": null,
+          "respuesta_correcta": "Las discretas se cuentan (valores enteros), las continuas se miden (valores reales en un intervalo).",
+          "explicacion": "Las variables discretas resultan de procesos de conteo y no admiten valores intermedios entre dos consecutivos, mientras que las continuas pueden tomar cualquier valor real en un rango dado.",
+          "id_estable": "d02906daa455",
+          "es_fallback": false
+        },
+        {
+          "id": 18,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si una empresa tiene 100 empleados y 20 de ellos tienen un salario inferior a 1000 USD, ¿cuál es la frecuencia relativa expresada en porcentaje?",
+          "opciones": null,
+          "respuesta_correcta": "20%",
+          "explicacion": "La frecuencia relativa se obtiene dividiendo la frecuencia absoluta (20) por el total (100). El resultado es 0.20, que equivale al 20%.",
+          "id_estable": "6bf9a8369b68",
+          "es_fallback": false
+        },
+        {
+          "id": 19,
+          "tipo": "respuesta_abierta",
+          "pregunta": "En un conjunto de datos, ¿qué es una 'marca de clase' y cómo se calcula?",
+          "opciones": null,
+          "respuesta_correcta": "El punto medio de un intervalo, calculado como (límite inferior + límite superior) / 2.",
+          "explicacion": "La marca de clase representa a todo el intervalo en cálculos estadísticos posteriores, como la media de datos agrupados o la construcción de polígonos de frecuencia.",
+          "id_estable": "12ebd3a4bb0f",
+          "es_fallback": false
+        },
+        {
+          "id": 20,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si tienes una variable medida en escala ordinal, ¿por qué es incorrecto calcular la media aritmética?",
+          "opciones": null,
+          "respuesta_correcta": "Porque la distancia entre categorías no es constante ni conocida.",
+          "explicacion": "La media aritmética requiere operaciones de suma y división sobre valores numéricos con distancias definidas. En escalas ordinales, las distancias entre 'bajo' y 'medio' no son necesariamente iguales a las de 'medio' y 'alto'.",
+          "id_estable": "a45b25249e72",
+          "es_fallback": false
+        }
+      ]
+    },
+    "Medidas Estadísticas": {
+      "universidad": [
+        {
+          "id": 1,
+          "tipo": "opcion_multiple",
+          "pregunta": "En una distribución fuertemente sesgada a la derecha, ¿qué relación es la más probable entre la media y la mediana?",
+          "opciones": {
+            "A": "Media > Mediana",
+            "B": "Media < Mediana",
+            "C": "Media = Mediana",
+            "D": "No existe una relación predecible"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "En distribuciones sesgadas a la derecha, los valores extremos positivos 'arrastran' la media hacia arriba, mientras que la mediana es una medida robusta que permanece más cercana al centro de la masa de datos.",
+          "id_estable": "18a2dad2a874",
+          "es_fallback": false
+        },
+        {
+          "id": 2,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si a todos los valores de un conjunto de datos se les suma una constante 'k', ¿qué sucede con la desviación estándar?",
+          "opciones": {
+            "A": "Aumenta en 'k'",
+            "B": "Se multiplica por 'k'",
+            "C": "Permanece igual",
+            "D": "Disminuye en 'k'"
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "La desviación estándar mide la dispersión respecto a la media. Sumar una constante desplaza toda la distribución, pero no cambia la distancia entre los datos, por lo que la dispersión se mantiene constante.",
+          "id_estable": "9d2e54e23f7c",
+          "es_fallback": false
+        },
+        {
+          "id": 3,
+          "tipo": "opcion_multiple",
+          "pregunta": "Un investigador compara la variabilidad de dos grupos con unidades de medida distintas (ej. kg y cm). ¿Qué medida debe utilizar?",
+          "opciones": {
+            "A": "Varianza",
+            "B": "Desviación estándar",
+            "C": "Coeficiente de variación",
+            "D": "Rango"
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "El coeficiente de variación es una medida adimensional que permite comparar la dispersión relativa de dos conjuntos de datos que tienen diferentes escalas o unidades de medida.",
+          "id_estable": "7226e3dd6c91",
+          "es_fallback": false
+        },
+        {
+          "id": 4,
+          "tipo": "opcion_multiple",
+          "pregunta": "En un diagrama de caja (boxplot), ¿qué representa la longitud de la caja?",
+          "opciones": {
+            "A": "El rango total de los datos",
+            "B": "El rango intercuartílico (RIC)",
+            "C": "La desviación estándar",
+            "D": "La distancia entre la media y la mediana"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La caja en un boxplot se extiende desde el primer cuartil (Q1) hasta el tercer cuartil (Q3), cubriendo así el 50% central de los datos, lo cual define el rango intercuartílico.",
+          "id_estable": "d933a8a737bf",
+          "es_fallback": false
+        },
+        {
+          "id": 5,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si un conjunto de datos tiene un valor atípico extremo, ¿cuál de las siguientes medidas es la menos afectada?",
+          "opciones": {
+            "A": "Media aritmética",
+            "B": "Varianza",
+            "C": "Mediana",
+            "D": "Desviación estándar"
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "La mediana es una medida de tendencia central robusta, ya que solo depende del orden de los datos y no de los valores numéricos exactos de los extremos, a diferencia de la media.",
+          "id_estable": "537684fc0dd3",
+          "es_fallback": false
+        },
+        {
+          "id": 6,
+          "tipo": "opcion_multiple",
+          "pregunta": "La varianza de un conjunto de datos es 16. ¿Cuál es la desviación estándar?",
+          "opciones": {
+            "A": "4",
+            "B": "8",
+            "C": "256",
+            "D": "No se puede determinar"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La desviación estándar es, por definición, la raíz cuadrada positiva de la varianza. Por lo tanto, la raíz cuadrada de 16 es 4.",
+          "id_estable": "005bdd71fc1b",
+          "es_fallback": false
+        },
+        {
+          "id": 7,
+          "tipo": "opcion_multiple",
+          "pregunta": "Al calcular la media de un conjunto de datos con frecuencias, si todos los valores se multiplican por 2, ¿qué ocurre con la media original?",
+          "opciones": {
+            "A": "Se mantiene igual",
+            "B": "Se duplica",
+            "C": "Se cuadruplica",
+            "D": "Se incrementa en 2"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La media aritmética es un operador lineal. Si cada dato x_i se multiplica por una constante c, la nueva media será c veces la media original.",
+          "id_estable": "f9e2e3bf39eb",
+          "es_fallback": false
+        },
+        {
+          "id": 8,
+          "tipo": "opcion_multiple",
+          "pregunta": "En un conjunto de datos simétrico, ¿qué se puede afirmar sobre la media y la mediana?",
+          "opciones": {
+            "A": "La media es mayor que la mediana",
+            "B": "La mediana es mayor que la media",
+            "C": "Son aproximadamente iguales",
+            "D": "No existe relación"
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "En distribuciones perfectamente simétricas, el centro de simetría coincide tanto para la media como para la mediana, haciendo que sus valores sean idénticos.",
+          "id_estable": "03cca9075476",
+          "es_fallback": false
+        },
+        {
+          "id": 9,
+          "tipo": "opcion_multiple",
+          "pregunta": "¿Qué indica un coeficiente de variación (CV) muy alto?",
+          "opciones": {
+            "A": "Los datos son muy consistentes",
+            "B": "Alta dispersión relativa respecto a la media",
+            "C": "La media es igual a la desviación estándar",
+            "D": "La distribución es simétrica"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El CV expresa la desviación estándar como un porcentaje de la media. Un valor alto indica que la variabilidad es grande comparada con el promedio del conjunto.",
+          "id_estable": "66e4472d3735",
+          "es_fallback": false
+        },
+        {
+          "id": 10,
+          "tipo": "opcion_multiple",
+          "pregunta": "En el contexto de un boxplot, ¿cómo se definen los valores atípicos (outliers) moderados?",
+          "opciones": {
+            "A": "Cualquier valor fuera del rango",
+            "B": "Valores a más de 1.5 veces el RIC por encima de Q3 o debajo de Q1",
+            "C": "Valores a más de 3 veces el RIC",
+            "D": "Valores superiores a la media más la desviación estándar"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La regla estándar de Tukey para identificar outliers en un boxplot establece que cualquier dato fuera del rango [Q1 - 1.5*RIC, Q3 + 1.5*RIC] se considera atípico.",
+          "id_estable": "3668f869d2c6",
+          "es_fallback": false
+        },
+        {
+          "id": 11,
+          "tipo": "verdadero_falso",
+          "pregunta": "La suma de las desviaciones de cada dato respecto a su media aritmética es siempre igual a cero.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Esta es una propiedad fundamental de la media aritmética; los valores por encima de la media compensan exactamente a los que están por debajo.",
+          "id_estable": "63912a0d7ec0",
+          "es_fallback": false
+        },
+        {
+          "id": 12,
+          "tipo": "verdadero_falso",
+          "pregunta": "Si la desviación estándar de un conjunto de datos es cero, significa que todos los valores del conjunto son iguales.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La desviación estándar mide la dispersión. Si no hay dispersión (todos los datos son idénticos), la distancia de cada dato a la media es cero, resultando en una desviación estándar de cero.",
+          "id_estable": "7f75e427b8a0",
+          "es_fallback": false
+        },
+        {
+          "id": 13,
+          "tipo": "verdadero_falso",
+          "pregunta": "La moda siempre existe y es única para cualquier conjunto de datos numéricos.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Un conjunto de datos puede ser multimodal (varias modas) o amodal (ningún valor se repite), por lo que no siempre es única ni garantiza su existencia.",
+          "id_estable": "540b52c7fc1d",
+          "es_fallback": false
+        },
+        {
+          "id": 14,
+          "tipo": "verdadero_falso",
+          "pregunta": "El rango intercuartílico es más sensible a los valores extremos que el rango total.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El rango total utiliza solo los valores máximo y mínimo (muy sensibles), mientras que el rango intercuartílico ignora el 25% superior e inferior, siendo mucho más robusto.",
+          "id_estable": "4d65a1a804a8",
+          "es_fallback": false
+        },
+        {
+          "id": 15,
+          "tipo": "verdadero_falso",
+          "pregunta": "La mediana siempre es uno de los valores presentes en el conjunto de datos original.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Si el número de observaciones es par, la mediana se calcula como el promedio de los dos valores centrales, lo cual puede resultar en un valor que no existe en el conjunto original.",
+          "id_estable": "da44717da656",
+          "es_fallback": false
+        },
+        {
+          "id": 16,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Calcula la media ponderada de tres exámenes con las siguientes notas y pesos: Nota 80 (peso 20%), Nota 70 (peso 30%), Nota 90 (peso 50%).",
+          "opciones": null,
+          "respuesta_correcta": "82",
+          "explicacion": "La media ponderada se obtiene multiplicando cada valor por su peso correspondiente y sumando los resultados: (80*0.2) + (70*0.3) + (90*0.5) = 16 + 21 + 45 = 82.",
+          "id_estable": "e8ec79954b81",
+          "es_fallback": false
+        },
+        {
+          "id": 17,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Dado el conjunto de datos {2, 4, 4, 4, 5, 5, 7, 9}, identifica la media, mediana y moda.",
+          "opciones": null,
+          "respuesta_correcta": "Media: 5, Mediana: 4.5, Moda: 4",
+          "explicacion": "La media es la suma (40) dividida por el número de elementos (8) = 5. La mediana es el promedio de los dos elementos centrales (4 y 5) = 4.5. La moda es el valor con mayor frecuencia, que es 4.",
+          "id_estable": "15f24a456ca9",
+          "es_fallback": false
+        },
+        {
+          "id": 18,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Explica por qué la varianza se expresa en unidades al cuadrado mientras que la desviación estándar se expresa en las unidades originales de los datos.",
+          "opciones": null,
+          "respuesta_correcta": "La varianza implica elevar las diferencias al cuadrado para eliminar signos negativos, lo que eleva la unidad al cuadrado. La desviación estándar aplica la raíz cuadrada para volver a la escala original.",
+          "explicacion": "Al calcular la varianza, las desviaciones se elevan al cuadrado, lo que cambia la dimensión de la medida. La raíz cuadrada (desviación estándar) revierte este proceso para facilitar la interpretación física.",
+          "id_estable": "de64adfb5327",
+          "es_fallback": false
+        },
+        {
+          "id": 19,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si un boxplot tiene un bigote derecho mucho más largo que el izquierdo, ¿qué tipo de sesgo indica?",
+          "opciones": null,
+          "respuesta_correcta": "Sesgo positivo o sesgo a la derecha",
+          "explicacion": "Un bigote derecho extendido indica que los valores más altos están más dispersos y alejados de la mediana, lo cual es característico de una distribución con sesgo positivo.",
+          "id_estable": "11730d9f9222",
+          "es_fallback": false
+        },
+        {
+          "id": 20,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Tienes dos inversiones: A (media 10%, desv. std 2%) y B (media 10%, desv. std 5%). ¿Cuál es más riesgosa y por qué?",
+          "opciones": null,
+          "respuesta_correcta": "La inversión B es más riesgosa porque tiene una mayor desviación estándar (mayor dispersión) ante el mismo rendimiento esperado.",
+          "explicacion": "El riesgo en finanzas suele asociarse con la volatilidad. A igual media, la inversión con mayor desviación estándar presenta mayor incertidumbre sobre el resultado final.",
+          "id_estable": "b18bf0ec23dd",
+          "es_fallback": false
+        }
+      ]
+    },
+    "Fundamentos de Probabilidad": {
+      "universidad": [
+        {
+          "id": 1,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si dos eventos A y B son mutuamente excluyentes, ¿qué afirmación es necesariamente verdadera?",
+          "opciones": {
+            "A": "P(A ∩ B) = 0",
+            "B": "P(A ∪ B) = P(A) * P(B)",
+            "C": "P(A | B) = P(A)",
+            "D": "P(A ∩ B) = P(A) + P(B)"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Por definición, los eventos mutuamente excluyentes no pueden ocurrir simultáneamente. Esto implica que la intersección de ambos conjuntos es el conjunto vacío, por lo que su probabilidad es cero.",
+          "id_estable": "821de638fb67",
+          "es_fallback": false
+        },
+        {
+          "id": 2,
+          "tipo": "opcion_multiple",
+          "pregunta": "En un enfoque frecuentista, ¿qué representa la probabilidad de un evento?",
+          "opciones": {
+            "A": "El grado de creencia subjetiva sobre la ocurrencia del evento.",
+            "B": "El límite de la frecuencia relativa del evento a medida que el número de ensayos tiende a infinito.",
+            "C": "La razón entre el número de casos favorables y el número total de casos posibles en un espacio muestral equiprobable.",
+            "D": "Un valor fijo determinado por axiomas matemáticos independientes de la experimentación."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El enfoque frecuentista define la probabilidad como la estabilidad de la frecuencia relativa en una serie larga de repeticiones bajo las mismas condiciones. Es un enfoque basado en la observación empírica.",
+          "id_estable": "ce36b977a7bf",
+          "es_fallback": false
+        },
+        {
+          "id": 3,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si P(A) = 0.4, P(B) = 0.5 y P(A ∩ B) = 0.2, ¿son los eventos A y B independientes?",
+          "opciones": {
+            "A": "Sí, porque P(A ∩ B) = P(A) + P(B) - 0.7.",
+            "B": "No, porque P(A ∩ B) ≠ P(A) * P(B).",
+            "C": "Sí, porque P(A | B) = P(A ∩ B) / P(B).",
+            "D": "No, porque P(A ∪ B) ≠ 1."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Dos eventos son independientes si y solo si P(A ∩ B) = P(A) * P(B). En este caso, 0.4 * 0.5 = 0.2, por lo tanto, P(A ∩ B) es igual al producto, lo que significa que son independientes.",
+          "id_estable": "601cd09caf0d",
+          "es_fallback": false
+        },
+        {
+          "id": 4,
+          "tipo": "opcion_multiple",
+          "pregunta": "En el Teorema de Bayes, ¿qué representa P(A|B) cuando B es la evidencia y A la hipótesis?",
+          "opciones": {
+            "A": "La verosimilitud de la evidencia dada la hipótesis.",
+            "B": "La probabilidad a priori de la hipótesis.",
+            "C": "La probabilidad posterior de la hipótesis dado que se observó la evidencia.",
+            "D": "La probabilidad marginal de la evidencia."
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "El Teorema de Bayes permite actualizar la probabilidad de una hipótesis (A) una vez que se tiene nueva información o evidencia (B). Por tanto, P(A|B) es la probabilidad posterior.",
+          "id_estable": "e1732367bbf3",
+          "es_fallback": false
+        },
+        {
+          "id": 5,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si P(A) = 0.3, ¿cuál es el valor de P(Aᶜ)?",
+          "opciones": {
+            "A": "0.7",
+            "B": "0.3",
+            "C": "1.3",
+            "D": "No se puede determinar sin saber si son independientes."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La regla del complemento establece que la suma de la probabilidad de un evento y la de su complemento es siempre 1. Por lo tanto, P(Aᶜ) = 1 - P(A) = 1 - 0.3 = 0.7.",
+          "id_estable": "e5472a0fe873",
+          "es_fallback": false
+        },
+        {
+          "id": 6,
+          "tipo": "opcion_multiple",
+          "pregunta": "Una urna tiene 3 bolas rojas y 2 azules. Se extraen dos bolas sin reemplazo. ¿Cuál es la probabilidad de que ambas sean rojas?",
+          "opciones": {
+            "A": "0.36",
+            "B": "0.3",
+            "C": "0.6",
+            "D": "0.2"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La probabilidad es P(R1) * P(R2|R1) = (3/5) * (2/4) = 6/20 = 0.3. Al ser sin reemplazo, el espacio muestral cambia tras la primera extracción.",
+          "id_estable": "6462c6a772a7",
+          "es_fallback": false
+        },
+        {
+          "id": 7,
+          "tipo": "opcion_multiple",
+          "pregunta": "La regla de Laplace para calcular probabilidades es aplicable únicamente cuando:",
+          "opciones": {
+            "A": "El número de ensayos es muy grande.",
+            "B": "Los eventos son dependientes.",
+            "C": "Todos los eventos elementales son equiprobables.",
+            "D": "Se conoce la probabilidad condicional."
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "La regla de Laplace (casos favorables / casos posibles) asume que cada resultado del espacio muestral tiene la misma probabilidad de ocurrir, una condición fundamental de este enfoque.",
+          "id_estable": "9aeb5f89677b",
+          "es_fallback": false
+        },
+        {
+          "id": 8,
+          "tipo": "opcion_multiple",
+          "pregunta": "¿Qué indica el valor de P(A|B) = 1?",
+          "opciones": {
+            "A": "Que A y B son independientes.",
+            "B": "Que el evento B es un subconjunto del evento A.",
+            "C": "Que el evento A es un subconjunto del evento B.",
+            "D": "Que A y B son mutuamente excluyentes."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Si P(A|B) = 1, significa que dado que B ha ocurrido, A ocurre con total seguridad. Esto implica que la ocurrencia de B implica necesariamente la ocurrencia de A, es decir, B ⊆ A.",
+          "id_estable": "42c611bd3fad",
+          "es_fallback": false
+        },
+        {
+          "id": 9,
+          "tipo": "verdadero_falso",
+          "pregunta": "Si dos eventos son independientes, entonces P(A ∪ B) = P(A) + P(B).",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La fórmula P(A ∪ B) = P(A) + P(B) - P(A ∩ B) es la regla general. Para que la suma sea directa, los eventos deben ser mutuamente excluyentes, no independientes.",
+          "id_estable": "152faf3150cc",
+          "es_fallback": false
+        },
+        {
+          "id": 10,
+          "tipo": "verdadero_falso",
+          "pregunta": "La probabilidad condicional P(A|B) nunca puede ser mayor que P(A).",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "P(A|B) puede ser mayor, menor o igual a P(A). Si P(A|B) > P(A), indica que la ocurrencia de B aumenta la probabilidad de que A ocurra (dependencia positiva).",
+          "id_estable": "ab432503e1be",
+          "es_fallback": false
+        },
+        {
+          "id": 11,
+          "tipo": "verdadero_falso",
+          "pregunta": "El espacio muestral es el conjunto de todos los resultados posibles de un experimento aleatorio.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El espacio muestral (denotado usualmente como S o Ω) contiene todos los resultados elementales posibles. Es la base sobre la cual se definen los eventos y sus probabilidades.",
+          "id_estable": "e12f69b2c377",
+          "es_fallback": false
+        },
+        {
+          "id": 12,
+          "tipo": "verdadero_falso",
+          "pregunta": "Si P(A) = 0, el evento A es imposible de ocurrir.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "En el marco de la teoría de la probabilidad, un evento con probabilidad 0 se considera un evento imposible, aunque en espacios muestrales continuos, un evento de probabilidad 0 no significa necesariamente que sea imposible.",
+          "id_estable": "4ea64c345b68",
+          "es_fallback": false
+        },
+        {
+          "id": 13,
+          "tipo": "verdadero_falso",
+          "pregunta": "La independencia estadística implica que no existe ninguna relación causal entre los eventos.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La independencia estadística es una propiedad matemática (P(A∩B)=P(A)P(B)). Puede haber relaciones causales que no se reflejen en independencia estadística o viceversa; no deben confundirse causalidad y correlación/independencia.",
+          "id_estable": "33d5b87ef585",
+          "es_fallback": false
+        },
+        {
+          "id": 14,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Un test médico tiene una sensibilidad del 99% (P(Pos|Enfermo)=0.99) y una especificidad del 95% (P(Neg|Sano)=0.95). Si la prevalencia de la enfermedad es del 1%, ¿cuál es la probabilidad de que una persona esté enferma si el test da positivo? Explique brevemente el proceso.",
+          "opciones": null,
+          "respuesta_correcta": "Aprox 0.166 (16.6%)",
+          "explicacion": "Se utiliza el Teorema de Bayes: P(E|+) = [P(+|E) * P(E)] / [P(+|E) * P(E) + P(+|S) * P(S)]. Esto resulta en (0.99 * 0.01) / (0.99 * 0.01 + 0.05 * 0.99) = 0.0099 / 0.0594 ≈ 0.166. El resultado bajo se debe a la baja prevalencia.",
+          "id_estable": "8c5eafe5a4b8",
+          "es_fallback": false
+        },
+        {
+          "id": 15,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Explique la diferencia fundamental entre el enfoque clásico y el enfoque subjetivista de la probabilidad.",
+          "opciones": null,
+          "respuesta_correcta": "El clásico es objetivo y requiere simetría; el subjetivista es personal y basado en información disponible.",
+          "explicacion": "El enfoque clásico requiere condiciones de simetría (equiprobabilidad) y conocimiento a priori de los casos. El subjetivista interpreta la probabilidad como el grado de creencia personal de un individuo sobre un evento, permitiendo asignar probabilidades a eventos únicos.",
+          "id_estable": "a6ecfc1e38c3",
+          "es_fallback": false
+        },
+        {
+          "id": 16,
+          "tipo": "respuesta_abierta",
+          "pregunta": "En una baraja de 52 cartas, ¿cuál es la probabilidad de extraer una carta que sea 'As' o 'Corazones'? Muestre el cálculo usando la regla de la suma.",
+          "opciones": null,
+          "respuesta_correcta": "16/52 o 4/13",
+          "explicacion": "P(As ∪ Cor) = P(As) + P(Cor) - P(As ∩ Cor). Hay 4 Ases, 13 Corazones y 1 As de Corazones. Entonces: (4/52) + (13/52) - (1/52) = 16/52 = 4/13.",
+          "id_estable": "89e3504f9a1a",
+          "es_fallback": false
+        },
+        {
+          "id": 17,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si P(A|B) = P(A), ¿qué se puede concluir sobre la relación entre A y B? Justifique.",
+          "opciones": null,
+          "respuesta_correcta": "Los eventos son independientes.",
+          "explicacion": "La definición de independencia es que la ocurrencia de B no aporta información sobre la probabilidad de A. Matemáticamente, P(A|B) = P(A ∩ B) / P(B) = P(A), lo que implica P(A ∩ B) = P(A) * P(B).",
+          "id_estable": "3d2461b5f7b1",
+          "es_fallback": false
+        },
+        {
+          "id": 18,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si tenemos dos eventos A y B tales que P(A)=0.5, P(B)=0.3 y P(A ∪ B)=0.7, ¿cuál es la probabilidad de la intersección P(A ∩ B)?",
+          "opciones": {
+            "A": "0.1",
+            "B": "0.2",
+            "C": "0.8",
+            "D": "0.15"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Usando la regla de la suma: P(A ∪ B) = P(A) + P(B) - P(A ∩ B). Despejando: 0.7 = 0.5 + 0.3 - P(A ∩ B), por lo tanto P(A ∩ B) = 0.8 - 0.7 = 0.1.",
+          "id_estable": "ddfb1575c13b",
+          "es_fallback": false
+        },
+        {
+          "id": 19,
+          "tipo": "verdadero_falso",
+          "pregunta": "La probabilidad de la unión de dos eventos siempre es menor o igual a la suma de sus probabilidades individuales.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Debido a que P(A ∪ B) = P(A) + P(B) - P(A ∩ B), y como P(A ∩ B) ≥ 0, la suma de las probabilidades individuales siempre será mayor o igual a la unión (la igualdad ocurre si son excluyentes).",
+          "id_estable": "52db4b227e9e",
+          "es_fallback": false
+        },
+        {
+          "id": 20,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Defina qué es un evento compuesto y proporcione un ejemplo breve.",
+          "opciones": null,
+          "respuesta_correcta": "Un evento formado por la combinación de dos o más eventos simples mediante operaciones de unión, intersección o complemento.",
+          "explicacion": "Un evento compuesto es aquel que puede descomponerse en eventos más simples. Ejemplo: en el lanzamiento de un dado, el evento 'obtener un número par mayor que 4' es un evento compuesto (resultado 6).",
+          "id_estable": "bd7c69ce36d3",
+          "es_fallback": false
+        }
+      ]
+    },
+    "Distribuciones de Probabilidad": {
+      "universidad": [
+        {
+          "id": 1,
+          "tipo": "opcion_multiple",
+          "pregunta": "En un experimento binomial con n=10 y p=0.3, ¿por qué no es correcto utilizar la aproximación a la normal sin aplicar una corrección por continuidad?",
+          "opciones": {
+            "A": "Porque n*p y n*(1-p) son menores a 5, lo que hace que la aproximación sea imprecisa.",
+            "B": "Porque la distribución binomial solo es simétrica cuando p=0.5.",
+            "C": "Porque la variable es continua y no se puede aproximar a una discreta.",
+            "D": "Porque el valor de la varianza es mayor que la media."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La aproximación normal a la binomial requiere que n*p y n*(1-p) sean suficientemente grandes (usualmente >= 5 o 10) para asegurar que la forma de la distribución sea aproximadamente simétrica y continua.",
+          "id_estable": "e4daf9694609",
+          "es_fallback": false
+        },
+        {
+          "id": 2,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si una variable aleatoria X sigue una distribución normal con media 50 y desviación estándar 10, ¿qué representa el valor Z = 1.5?",
+          "opciones": {
+            "A": "Que el valor de X es 65 y está 1.5 desviaciones estándar por encima de la media.",
+            "B": "Que el valor de X es 51.5 y está muy cerca de la media.",
+            "C": "Que la probabilidad de que X sea menor a 50 es 1.5.",
+            "D": "Que la varianza de la distribución es 1.5 veces la media."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El valor Z se calcula como (X - media) / desviación_estándar. Un Z de 1.5 indica que el dato se encuentra a 1.5 desviaciones estándar de la media, resultando en X = 50 + 1.5(10) = 65.",
+          "id_estable": "33009c6fe0e4",
+          "es_fallback": false
+        },
+        {
+          "id": 3,
+          "tipo": "opcion_multiple",
+          "pregunta": "En una distribución de probabilidad continua, ¿por qué la probabilidad de que la variable tome un valor puntual exacto es siempre cero?",
+          "opciones": {
+            "A": "Porque el área bajo la curva en un solo punto es una línea vertical sin ancho.",
+            "B": "Porque las variables continuas no pueden tomar valores enteros.",
+            "C": "Porque la función de densidad siempre es igual a cero.",
+            "D": "Porque la suma de todas las probabilidades debe ser igual a uno."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "En una distribución continua, la probabilidad se define como el área bajo la curva. Como el área de un segmento de ancho cero es cero, la probabilidad de un punto exacto es nula.",
+          "id_estable": "391d24173f2d",
+          "es_fallback": false
+        },
+        {
+          "id": 4,
+          "tipo": "opcion_multiple",
+          "pregunta": "Cuál es la principal diferencia entre la función de masa de probabilidad (FMP) y la función de densidad de probabilidad (FDP)?",
+          "opciones": {
+            "A": "La FMP se aplica a variables discretas y la FDP a variables continuas.",
+            "B": "La FMP siempre resulta en valores mayores a 1, mientras que la FDP es menor a 1.",
+            "C": "La FDP se usa solo para distribuciones normales y la FMP para binomiales.",
+            "D": "No hay diferencia, ambos términos son intercambiables."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La FMP asigna probabilidades exactas a valores individuales en variables discretas, mientras que la FDP describe la densidad de probabilidad en un rango para variables continuas, donde la probabilidad se obtiene integrando.",
+          "id_estable": "1f86116bdee1",
+          "es_fallback": false
+        },
+        {
+          "id": 5,
+          "tipo": "opcion_multiple",
+          "pregunta": "Bajo la regla empírica (68-95-99.7) de una distribución normal, ¿qué porcentaje de los datos se encuentra fuera de dos desviaciones estándar de la media?",
+          "opciones": {
+            "A": "Aproximadamente el 5%.",
+            "B": "Aproximadamente el 32%.",
+            "C": "Exactamente el 0.3%.",
+            "D": "Aproximadamente el 15%."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La regla empírica establece que el 95% de los datos se encuentra dentro de 2 desviaciones estándar (media +/- 2sigma). Por lo tanto, el 5% restante queda fuera de ese rango.",
+          "id_estable": "e3ac2c04aedf",
+          "es_fallback": false
+        },
+        {
+          "id": 6,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si un ensayo de Bernoulli se repite 20 veces, ¿qué parámetro es indispensable conocer además del número de ensayos para calcular la probabilidad exacta?",
+          "opciones": {
+            "A": "La probabilidad de éxito en un solo ensayo (p).",
+            "B": "La media de la muestra.",
+            "C": "La desviación estándar de la población.",
+            "D": "El valor máximo de la variable."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La distribución binomial está definida completamente por dos parámetros: n (número de ensayos) y p (probabilidad de éxito en cada ensayo independiente).",
+          "id_estable": "17a052128d52",
+          "es_fallback": false
+        },
+        {
+          "id": 7,
+          "tipo": "opcion_multiple",
+          "pregunta": "Al estandarizar una variable normal, ¿cuál es la media y la desviación estándar de la distribución resultante (Z)?",
+          "opciones": {
+            "A": "Media = 0, Desviación estándar = 1.",
+            "B": "Media = 1, Desviación estándar = 0.",
+            "C": "Media = 50, Desviación estándar = 10.",
+            "D": "Media = 0, Desviación estándar = 0."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La estandarización (Z = (X-mu)/sigma) transforma cualquier distribución normal a la 'distribución normal estándar', la cual siempre tiene una media de 0 y una desviación estándar de 1.",
+          "id_estable": "9f1585300377",
+          "es_fallback": false
+        },
+        {
+          "id": 8,
+          "tipo": "opcion_multiple",
+          "pregunta": "¿Qué ocurre con la forma de la campana de Gauss si la desviación estándar aumenta mientras la media se mantiene constante?",
+          "opciones": {
+            "A": "La campana se vuelve más ancha y baja.",
+            "B": "La campana se vuelve más estrecha y alta.",
+            "C": "La campana se desplaza hacia la derecha.",
+            "D": "La campana se desplaza hacia la izquierda."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La desviación estándar mide la dispersión. Si aumenta, los datos están más alejados de la media, lo que causa que la curva se aplane y se extienda horizontalmente para mantener un área total de 1.",
+          "id_estable": "17b7dc7fb620",
+          "es_fallback": false
+        },
+        {
+          "id": 9,
+          "tipo": "opcion_multiple",
+          "pregunta": "En una distribución binomial, si el número de ensayos es muy grande y p es muy pequeño, ¿a qué distribución se suele aproximar?",
+          "opciones": {
+            "A": "A una distribución de Poisson.",
+            "B": "A una distribución uniforme.",
+            "C": "A una distribución exponencial.",
+            "D": "A una distribución normal sin corrección."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La distribución de Poisson es el límite de la binomial cuando n tiende a infinito y p tiende a cero, manteniendo constante el producto lambda = n*p.",
+          "id_estable": "3fa6aeae825c",
+          "es_fallback": false
+        },
+        {
+          "id": 10,
+          "tipo": "opcion_multiple",
+          "pregunta": "Un estudiante afirma que, como la distribución normal es continua, no puede ser usada para modelar fenómenos discretos. ¿Por qué es falso?",
+          "opciones": {
+            "A": "Porque si el rango de valores discretos es muy amplio, la normal es una excelente aproximación.",
+            "B": "Porque los números discretos son, en realidad, continuos.",
+            "C": "Porque la media siempre es un número decimal.",
+            "D": "Porque la normal no tiene límites en los extremos."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Aunque la distribución normal es teóricamente continua, se utiliza frecuentemente para aproximar distribuciones discretas (como la binomial) cuando el número de eventos es grande, facilitando los cálculos.",
+          "id_estable": "3b89f15bf4cb",
+          "es_fallback": false
+        },
+        {
+          "id": 11,
+          "tipo": "verdadero_falso",
+          "pregunta": "La suma de las probabilidades en una función de densidad de probabilidad continua es siempre 1.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Por definición, el área total bajo la curva de una función de densidad de probabilidad sobre todo su dominio debe ser exactamente igual a 1, representando la certeza del 100% de que el evento ocurra en algún punto.",
+          "id_estable": "3cf71b52405c",
+          "es_fallback": false
+        },
+        {
+          "id": 12,
+          "tipo": "verdadero_falso",
+          "pregunta": "Si un valor Z es negativo, esto indica que la probabilidad asociada al valor es negativa.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Un valor Z negativo solo indica que el dato se encuentra por debajo de la media. Las probabilidades siempre son valores positivos entre 0 y 1.",
+          "id_estable": "5796df3b1861",
+          "es_fallback": false
+        },
+        {
+          "id": 13,
+          "tipo": "verdadero_falso",
+          "pregunta": "En una distribución binomial, el valor esperado (media) es igual a n * p.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El valor esperado de una variable aleatoria binomial es el producto del número de ensayos por la probabilidad de éxito en cada ensayo, lo cual es una propiedad fundamental de esta distribución.",
+          "id_estable": "e75fe77d11d9",
+          "es_fallback": false
+        },
+        {
+          "id": 14,
+          "tipo": "verdadero_falso",
+          "pregunta": "La distribución normal es simétrica respecto a su mediana pero no respecto a su media.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "En una distribución normal, la media, la mediana y la moda son idénticas. Por lo tanto, la curva es perfectamente simétrica respecto a cualquiera de estos puntos.",
+          "id_estable": "d7e9b69b0359",
+          "es_fallback": false
+        },
+        {
+          "id": 15,
+          "tipo": "verdadero_falso",
+          "pregunta": "La varianza de una distribución binomial es siempre mayor que su media.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La varianza de una binomial es n*p*(1-p). Como (1-p) es menor que 1, la varianza es siempre menor que la media (n*p).",
+          "id_estable": "d11df400cc0f",
+          "es_fallback": false
+        },
+        {
+          "id": 16,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si tienes una distribución normal con media 100 y desviación estándar 15, calcula el valor Z para X = 130 e interpreta qué significa en términos de posición respecto a la media.",
+          "opciones": null,
+          "respuesta_correcta": "Z = (130 - 100) / 15 = 2.0. Esto significa que el valor 130 está exactamente 2 desviaciones estándar por encima de la media.",
+          "explicacion": "El cálculo de Z estandariza el valor, permitiendo comparar datos de diferentes escalas. Un Z de 2 indica que el valor es significativamente alto comparado con la mayoría de la población.",
+          "id_estable": "a039f91ed5f2",
+          "es_fallback": false
+        },
+        {
+          "id": 17,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Explica brevemente por qué la corrección por continuidad es necesaria al pasar de una distribución binomial a una normal.",
+          "opciones": null,
+          "respuesta_correcta": "Es necesaria porque la binomial es discreta (barras) y la normal es continua (curva). La corrección (sumar o restar 0.5) ajusta el ancho de las barras para que el área bajo la curva normal capture correctamente la probabilidad de los valores enteros.",
+          "explicacion": "Al aproximar rectángulos con una curva, se pierde una pequeña parte del área en los bordes. La corrección por continuidad compensa esta discrepancia geométrica.",
+          "id_estable": "4799cb8e2e34",
+          "es_fallback": false
+        },
+        {
+          "id": 18,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Dados 10 ensayos de Bernoulli con p=0.5, calcula la probabilidad de obtener exactamente 5 éxitos usando la fórmula binomial (n! / (k!(n-k)!)) * p^k * (1-p)^(n-k).",
+          "opciones": null,
+          "respuesta_correcta": "P(X=5) = (10! / (5!5!)) * 0.5^5 * 0.5^5 = 252 * 0.0009765 = 0.2461.",
+          "explicacion": "Este cálculo utiliza la combinatoria para determinar cuántas secuencias de 10 ensayos resultan en 5 éxitos, multiplicadas por la probabilidad de una de esas secuencias específicas.",
+          "id_estable": "9e54888b863c",
+          "es_fallback": false
+        },
+        {
+          "id": 19,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si en un examen las puntuaciones siguen una distribución normal, ¿qué porcentaje de estudiantes esperas que obtenga una puntuación superior a la media + 3 desviaciones estándar?",
+          "opciones": null,
+          "respuesta_correcta": "Aproximadamente 0.15% (basado en la regla empírica 99.7% dentro de 3 sigmas, dejando 0.3% fuera, repartido en ambas colas).",
+          "explicacion": "La regla empírica indica que el 99.7% de los datos se concentra entre +/- 3 desviaciones estándar. El 0.3% restante se divide equitativamente en los extremos superior e inferior.",
+          "id_estable": "5fed701151bb",
+          "es_fallback": false
+        },
+        {
+          "id": 20,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Compara un ensayo de Bernoulli con un experimento binomial. ¿Cuál es la relación jerárquica entre ambos?",
+          "opciones": null,
+          "respuesta_correcta": "Un ensayo de Bernoulli es un experimento con dos posibles resultados (éxito/fracaso). Un experimento binomial es una serie de n ensayos de Bernoulli independientes con la misma probabilidad p.",
+          "explicacion": "La distribución binomial es la generalización de la distribución de Bernoulli para múltiples repeticiones, asumiendo independencia entre cada intento.",
+          "id_estable": "bd0de34b4fbc",
+          "es_fallback": false
+        }
+      ]
+    },
+    "Inferencia Estadística": {
+      "universidad": [
+        {
+          "id": 1,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si al calcular un intervalo de confianza del 95% para la media poblacional, el investigador decide aumentar el tamaño de la muestra sin cambiar el nivel de confianza, ¿qué sucede con el margen de error?",
+          "opciones": {
+            "A": "El margen de error disminuye debido a que el error estándar de la media se reduce.",
+            "B": "El margen de error aumenta porque la varianza muestral tiende a estabilizarse.",
+            "C": "El margen de error permanece constante ya que el nivel de confianza determina el ancho del intervalo.",
+            "D": "El margen de error se vuelve impredecible debido a la ley de los grandes números."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El margen de error es proporcional al error estándar (desviación estándar dividida por la raíz cuadrada de n). Al aumentar n, el error estándar disminuye, reduciendo así la amplitud del intervalo.",
+          "id_estable": "3889a57a7107",
+          "es_fallback": false
+        },
+        {
+          "id": 2,
+          "tipo": "opcion_multiple",
+          "pregunta": "En una prueba de hipótesis, ¿qué representa el valor p (p-value)?",
+          "opciones": {
+            "A": "La probabilidad de que la hipótesis nula sea verdadera dados los datos observados.",
+            "B": "La probabilidad de obtener un estadístico de prueba al menos tan extremo como el observado, asumiendo que la hipótesis nula es cierta.",
+            "C": "El nivel de significancia alfa preestablecido por el investigador antes de realizar el experimento.",
+            "D": "La probabilidad de cometer un error de Tipo II si la hipótesis alternativa es correcta."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El valor p es una medida de evidencia contra la hipótesis nula; cuantifica la probabilidad de que los datos sean tan extremos como los obtenidos si la hipótesis nula fuera correcta.",
+          "id_estable": "48934d0895e2",
+          "es_fallback": false
+        },
+        {
+          "id": 3,
+          "tipo": "opcion_multiple",
+          "pregunta": "El Teorema del Límite Central es fundamental para la inferencia estadística porque permite:",
+          "opciones": {
+            "A": "Asumir que la distribución de la población original es siempre normal si la muestra es grande.",
+            "B": "Utilizar la distribución normal para inferir sobre la media muestral, incluso si la población no es normal, siempre que el tamaño de la muestra sea suficientemente grande.",
+            "C": "Calcular la desviación estándar de la población sin conocer los datos individuales.",
+            "D": "Garantizar que no existan errores de muestreo en estudios con muestras pequeñas."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El TLC establece que la distribución de las medias muestrales tiende a la normalidad a medida que n aumenta, independientemente de la forma de la distribución de la población original.",
+          "id_estable": "af0bdf454df5",
+          "es_fallback": false
+        },
+        {
+          "id": 4,
+          "tipo": "opcion_multiple",
+          "pregunta": "Un investigador comete un error de Tipo I cuando:",
+          "opciones": {
+            "A": "Rechaza la hipótesis nula cuando esta es, de hecho, verdadera.",
+            "B": "No rechaza la hipótesis nula cuando la hipótesis alternativa es verdadera.",
+            "C": "Acepta la hipótesis nula a pesar de tener evidencia estadística en contra.",
+            "D": "Elige un nivel de significancia demasiado bajo para detectar un efecto real."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El error de Tipo I ocurre cuando falsamente declaramos un efecto como significativo (falso positivo), rechazando erróneamente una hipótesis nula que es verdadera.",
+          "id_estable": "05a48ae7de44",
+          "es_fallback": false
+        },
+        {
+          "id": 5,
+          "tipo": "opcion_multiple",
+          "pregunta": "¿En qué situación es más adecuado utilizar la distribución t-Student en lugar de la distribución Z para construir un intervalo de confianza?",
+          "opciones": {
+            "A": "Cuando el tamaño de la muestra es muy grande (n > 100).",
+            "B": "Cuando se conoce la desviación estándar poblacional (sigma).",
+            "C": "Cuando la muestra es pequeña y se desconoce la desviación estándar poblacional, debiendo estimarse con la desviación muestral (s).",
+            "D": "Cuando la población sigue una distribución no normal y la muestra es muy pequeña."
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "La distribución t-Student tiene colas más pesadas que la Z, lo que compensa la incertidumbre adicional introducida al estimar la desviación estándar poblacional mediante la muestral cuando n es pequeño.",
+          "id_estable": "0c57ed22bede",
+          "es_fallback": false
+        },
+        {
+          "id": 6,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si al realizar una prueba de hipótesis se obtiene un valor p de 0.03 y el nivel de significancia (alfa) es de 0.05, ¿cuál es la conclusión correcta?",
+          "opciones": {
+            "A": "No hay suficiente evidencia para rechazar la hipótesis nula.",
+            "B": "La hipótesis nula es falsa con una probabilidad del 97%.",
+            "C": "Se rechaza la hipótesis nula, ya que el valor p es menor que el nivel de significancia.",
+            "D": "La probabilidad de que el resultado sea debido al azar es del 5%."
+          },
+          "respuesta_correcta": "C",
+          "explicacion": "La regla de decisión estándar es rechazar la hipótesis nula si el valor p es menor o igual al nivel de significancia alfa, indicando que el resultado es estadísticamente significativo.",
+          "id_estable": "bd128fffd0cf",
+          "es_fallback": false
+        },
+        {
+          "id": 7,
+          "tipo": "opcion_multiple",
+          "pregunta": "El error de Tipo II (beta) se define como:",
+          "opciones": {
+            "A": "La probabilidad de rechazar la hipótesis nula erróneamente.",
+            "B": "La probabilidad de no rechazar la hipótesis nula cuando es falsa.",
+            "C": "El complemento del nivel de confianza.",
+            "D": "La diferencia entre el estadístico de prueba y el valor crítico."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El error de Tipo II es un falso negativo: fallar en detectar un efecto o diferencia que realmente existe en la población.",
+          "id_estable": "86f351e249b8",
+          "es_fallback": false
+        },
+        {
+          "id": 8,
+          "tipo": "opcion_multiple",
+          "pregunta": "¿Qué impacto tiene un aumento en el nivel de confianza (por ejemplo, de 95% a 99%) sobre el intervalo de confianza?",
+          "opciones": {
+            "A": "El intervalo se vuelve más estrecho.",
+            "B": "El intervalo se vuelve más ancho.",
+            "C": "El intervalo no cambia su amplitud, solo su interpretación.",
+            "D": "El error estándar disminuye proporcionalmente."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "Para aumentar la certeza de que el parámetro poblacional se encuentra dentro del intervalo, debemos ampliar el rango de valores posibles, aumentando así la anchura del intervalo.",
+          "id_estable": "924f06c242a0",
+          "es_fallback": false
+        },
+        {
+          "id": 9,
+          "tipo": "opcion_multiple",
+          "pregunta": "En un muestreo aleatorio simple, ¿cuál es la característica principal?",
+          "opciones": {
+            "A": "Todos los individuos de la población tienen la misma probabilidad de ser seleccionados.",
+            "B": "Se divide la población en estratos y se toma una muestra aleatoria de cada uno.",
+            "C": "Se eligen individuos según su facilidad de acceso.",
+            "D": "Se seleccionan individuos a intervalos regulares a partir de un listado."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El muestreo aleatorio simple garantiza que cada subconjunto posible de individuos de un tamaño dado tenga la misma probabilidad de ser elegido, eliminando sesgos de selección.",
+          "id_estable": "038dc237ce4d",
+          "es_fallback": false
+        },
+        {
+          "id": 10,
+          "tipo": "opcion_multiple",
+          "pregunta": "Al aumentar el tamaño de la muestra, ¿qué ocurre con el estadístico de prueba en una prueba de hipótesis, asumiendo que el efecto real es distinto de cero?",
+          "opciones": {
+            "A": "Tiende a disminuir, haciendo más difícil rechazar la hipótesis nula.",
+            "B": "Tiende a aumentar en valor absoluto, facilitando el rechazo de la hipótesis nula.",
+            "C": "Se mantiene constante, ya que el tamaño de muestra no afecta al estadístico.",
+            "D": "Se vuelve igual a la desviación estándar poblacional."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "A medida que n aumenta, el error estándar disminuye, lo que hace que el estadístico de prueba (que tiene el error estándar en el denominador) sea más grande, aumentando la potencia estadística.",
+          "id_estable": "d61146aa5126",
+          "es_fallback": false
+        },
+        {
+          "id": 11,
+          "tipo": "verdadero_falso",
+          "pregunta": "Un intervalo de confianza del 95% significa que hay un 95% de probabilidad de que la media poblacional específica se encuentre dentro del intervalo calculado.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El parámetro es fijo; el intervalo es el que varía. La interpretación correcta es que, si repitiéramos el muestreo muchas veces, el 95% de los intervalos calculados contendrían el parámetro poblacional.",
+          "id_estable": "3092d48415e1",
+          "es_fallback": false
+        },
+        {
+          "id": 12,
+          "tipo": "verdadero_falso",
+          "pregunta": "La potencia de una prueba estadística (1-beta) aumenta conforme disminuye el tamaño de la muestra.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La potencia estadística es la capacidad de detectar un efecto real; muestras más grandes reducen el error estándar, lo que aumenta la potencia y disminuye la probabilidad de error Tipo II.",
+          "id_estable": "976f0fdab76a",
+          "es_fallback": false
+        },
+        {
+          "id": 13,
+          "tipo": "verdadero_falso",
+          "pregunta": "Si el valor p es mayor que el nivel de significancia, se debe aceptar la hipótesis nula como verdadera.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "En estadística, no 'aceptamos' la nula; simplemente 'fallamos en rechazarla'. No hay evidencia suficiente para concluir que es falsa, pero eso no la hace necesariamente verdadera.",
+          "id_estable": "05be2b50ca68",
+          "es_fallback": false
+        },
+        {
+          "id": 14,
+          "tipo": "verdadero_falso",
+          "pregunta": "El error estándar de la media es siempre menor o igual que la desviación estándar de la población.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El error estándar es sigma / raíz(n). Dado que n >= 1, el error estándar siempre será menor o igual a la desviación estándar poblacional.",
+          "id_estable": "1846110a0795",
+          "es_fallback": false
+        },
+        {
+          "id": 15,
+          "tipo": "verdadero_falso",
+          "pregunta": "Un nivel de significancia de 0.01 implica que estamos dispuestos a aceptar un riesgo del 1% de cometer un error de Tipo I.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El nivel de significancia (alfa) es precisamente la tasa máxima permitida de error Tipo I que el investigador está dispuesto a tolerar.",
+          "id_estable": "eabc7b055c95",
+          "es_fallback": false
+        },
+        {
+          "id": 16,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si una muestra de 64 personas tiene una media de 100 y una desviación estándar de 16, calcule el error estándar de la media y el límite inferior de un intervalo de confianza del 95% (asuma z=1.96).",
+          "opciones": null,
+          "respuesta_correcta": "Error estándar = 2; Límite inferior = 96.08",
+          "explicacion": "El error estándar es 16 / sqrt(64) = 2. El margen de error es 1.96 * 2 = 3.92. Por lo tanto, el límite inferior es 100 - 3.92 = 96.08.",
+          "id_estable": "4cd87c990826",
+          "es_fallback": false
+        },
+        {
+          "id": 17,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Explique brevemente la relación entre el tamaño de la muestra y la precisión de la estimación.",
+          "opciones": null,
+          "respuesta_correcta": "La precisión aumenta con la raíz cuadrada del tamaño de la muestra.",
+          "explicacion": "A mayor tamaño de muestra, menor es el error estándar, lo que resulta en intervalos de confianza más estrechos y, por ende, una mayor precisión en la estimación del parámetro.",
+          "id_estable": "241eb4751dca",
+          "es_fallback": false
+        },
+        {
+          "id": 18,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si un estudio reporta un valor p de 0.0001, ¿qué implicaciones tiene esto sobre la significancia estadística y la importancia práctica?",
+          "opciones": null,
+          "respuesta_correcta": "El resultado es altamente significativo estadísticamente, pero la importancia práctica depende del tamaño del efecto.",
+          "explicacion": "Un valor p muy bajo indica que el resultado es poco probable bajo la hipótesis nula, pero no garantiza que el efecto sea grande o relevante para la toma de decisiones prácticas.",
+          "id_estable": "169be82235d5",
+          "es_fallback": false
+        },
+        {
+          "id": 19,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Compare brevemente la distribución Z y la t-Student en términos de sus colas y su uso.",
+          "opciones": null,
+          "respuesta_correcta": "La t-Student tiene colas más pesadas que la Z para compensar el uso de la desviación muestral.",
+          "explicacion": "La t-Student es más 'conservadora' (intervalos más amplios) que la Z cuando el tamaño de la muestra es pequeño, ya que la estimación de la varianza poblacional añade variabilidad.",
+          "id_estable": "be8920d2da95",
+          "es_fallback": false
+        },
+        {
+          "id": 20,
+          "tipo": "respuesta_abierta",
+          "pregunta": "En una prueba de hipótesis, si el estadístico de prueba cae dentro de la región de rechazo, ¿qué decisión se toma?",
+          "opciones": null,
+          "respuesta_correcta": "Se rechaza la hipótesis nula.",
+          "explicacion": "La región de rechazo contiene los valores del estadístico que son altamente improbables bajo la hipótesis nula, por lo que su ocurrencia justifica el rechazo de la misma.",
+          "id_estable": "4feb6caf7a7d",
+          "es_fallback": false
+        }
+      ]
+    },
+    "Modelado y Análisis de Relaciones": {
+      "universidad": [
+        {
+          "id": 1,
+          "tipo": "opcion_multiple",
+          "pregunta": "En un modelo de regresión lineal simple, ¿qué representa el coeficiente de determinación (R²) en términos de variabilidad?",
+          "opciones": {
+            "A": "La proporción de la varianza total de la variable dependiente explicada por la variable independiente.",
+            "B": "La pendiente de la recta que minimiza la suma de los errores al cuadrado.",
+            "C": "El grado de correlación lineal entre los residuos y los valores predichos.",
+            "D": "La probabilidad de que el modelo sea estadísticamente significativo bajo una prueba F."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El R² cuantifica qué parte de la dispersión de los datos observados es explicada por el modelo lineal. Un valor cercano a 1 indica que el modelo captura gran parte de la variabilidad, mientras que valores bajos sugieren que otros factores no incluidos en el modelo influyen en la variable dependiente.",
+          "id_estable": "c17cdc13458a",
+          "es_fallback": false
+        },
+        {
+          "id": 2,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si al calcular el coeficiente de correlación de Pearson (r) obtenemos un valor de 0, ¿qué podemos concluir con seguridad?",
+          "opciones": {
+            "A": "Las variables son independientes entre sí.",
+            "B": "No existe una relación lineal entre las variables.",
+            "C": "La covarianza entre las variables es igual a uno.",
+            "D": "Los datos siguen una distribución normal bivariante."
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El coeficiente de Pearson mide únicamente la intensidad y dirección de una relación lineal. Un valor de 0 implica ausencia de linealidad, pero no descarta relaciones no lineales complejas, como una relación parabólica o sinusoidal.",
+          "id_estable": "87737be08059",
+          "es_fallback": false
+        },
+        {
+          "id": 3,
+          "tipo": "opcion_multiple",
+          "pregunta": "En un análisis de varianza (ANOVA) para regresión, ¿qué mide el estadístico F?",
+          "opciones": {
+            "A": "La razón entre la varianza explicada por el modelo y la varianza residual.",
+            "B": "El error estándar de los coeficientes de regresión estimados.",
+            "C": "La diferencia absoluta entre los valores observados y los valores ajustados.",
+            "D": "La probabilidad de que el intercepto sea igual a cero."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "El estadístico F compara la varianza explicada por la regresión (MSR) con la varianza no explicada o error (MSE). Un valor F elevado sugiere que el modelo es estadísticamente más eficaz explicando los datos que simplemente usando la media aritmética.",
+          "id_estable": "e0e8cea5b5b0",
+          "es_fallback": false
+        },
+        {
+          "id": 4,
+          "tipo": "opcion_multiple",
+          "pregunta": "Al realizar una regresión por mínimos cuadrados ordinarios (MCO), ¿cuál es una propiedad fundamental de los residuos?",
+          "opciones": {
+            "A": "La suma de los residuos es siempre igual a cero.",
+            "B": "La media de los residuos es igual a la media de la variable dependiente.",
+            "C": "Los residuos siempre siguen una distribución uniforme.",
+            "D": "La suma de los cuadrados de los residuos es máxima."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Por construcción matemática en MCO, la recta de regresión pasa por el centroide de los datos (x̄, ȳ), lo que obliga a que la suma de las diferencias entre los valores observados y predichos sea cero. Esto garantiza que el error sistemático sea nulo.",
+          "id_estable": "764a499f6766",
+          "es_fallback": false
+        },
+        {
+          "id": 5,
+          "tipo": "opcion_multiple",
+          "pregunta": "En el análisis de series temporales, ¿qué representa la componente de 'estacionalidad'?",
+          "opciones": {
+            "A": "Fluctuaciones periódicas que se repiten en intervalos de tiempo regulares.",
+            "B": "La tendencia a largo plazo de la serie hacia el crecimiento o decrecimiento.",
+            "C": "Variaciones aleatorias que no pueden ser explicadas por el modelo.",
+            "D": "El impacto de eventos únicos e impredecibles en la serie."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La estacionalidad se refiere a patrones cíclicos que ocurren en periodos fijos, como ventas navideñas o consumo energético diario. Es distinta a la tendencia, que es el movimiento direccional sostenido a través del tiempo.",
+          "id_estable": "e9df0763edc9",
+          "es_fallback": false
+        },
+        {
+          "id": 6,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si la covarianza entre dos variables X e Y es negativa, ¿qué implica esto para la pendiente de la recta de regresión?",
+          "opciones": {
+            "A": "La pendiente será negativa.",
+            "B": "La pendiente será positiva.",
+            "C": "La pendiente será cero.",
+            "D": "La pendiente no puede determinarse sin la varianza de Y."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La pendiente (beta) en una regresión lineal simple se calcula como la covarianza dividida por la varianza de X. Dado que la varianza siempre es positiva, el signo de la pendiente depende exclusivamente del signo de la covarianza.",
+          "id_estable": "1736e7f39298",
+          "es_fallback": false
+        },
+        {
+          "id": 7,
+          "tipo": "opcion_multiple",
+          "pregunta": "En una serie temporal, ¿qué efecto tiene la 'autocorrelación' en los residuos?",
+          "opciones": {
+            "A": "Viola el supuesto de independencia de los errores en el modelo de regresión.",
+            "B": "Aumenta la precisión de los coeficientes estimados.",
+            "C": "Indica que la serie es estacionaria.",
+            "D": "Permite ignorar la tendencia de la serie."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La autocorrelación indica que los residuos actuales están correlacionados con residuos pasados, lo cual invalida los supuestos estándar de OLS. Esto suele conducir a subestimar los errores estándar y a inferencias incorrectas sobre la significancia de los parámetros.",
+          "id_estable": "1eefcc6555e9",
+          "es_fallback": false
+        },
+        {
+          "id": 8,
+          "tipo": "opcion_multiple",
+          "pregunta": "Si al añadir una variable predictora a un modelo de regresión el R² ajustado disminuye, ¿qué significa?",
+          "opciones": {
+            "A": "La nueva variable añade más ruido que información predictiva real.",
+            "B": "El modelo original estaba subajustado.",
+            "C": "La nueva variable es altamente significativa.",
+            "D": "La multicolinealidad ha sido eliminada."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "A diferencia del R² simple, el R² ajustado penaliza la inclusión de variables innecesarias. Si disminuye al agregar un predictor, indica que la ganancia en varianza explicada no compensa la pérdida de grados de libertad.",
+          "id_estable": "e01b2fbb2f2e",
+          "es_fallback": false
+        },
+        {
+          "id": 9,
+          "tipo": "verdadero_falso",
+          "pregunta": "Un valor de correlación de Pearson de 0.95 entre dos variables garantiza una relación causal entre ellas.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "La correlación estadística mide asociación, no causalidad. Una correlación alta puede ser resultado de una variable de confusión, azar o sesgo de selección, pero no implica que una variable cause directamente la otra.",
+          "id_estable": "f71f4f4dbf74",
+          "es_fallback": false
+        },
+        {
+          "id": 10,
+          "tipo": "verdadero_falso",
+          "pregunta": "En la regresión lineal, los valores atípicos (outliers) pueden alterar significativamente la pendiente de la recta de regresión.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Debido a que el método de mínimos cuadrados eleva los residuos al cuadrado, los puntos alejados de la tendencia general tienen una influencia desproporcionada en la estimación de los coeficientes, convirtiendo a la regresión en un método sensible a valores extremos.",
+          "id_estable": "c0502b2304c8",
+          "es_fallback": false
+        },
+        {
+          "id": 11,
+          "tipo": "verdadero_falso",
+          "pregunta": "Si un modelo tiene un R² de 0.80, significa que el 80% de los datos caen exactamente sobre la recta de regresión.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "B",
+          "explicacion": "El R² mide la proporción de la varianza explicada, no la cantidad de puntos que se ajustan perfectamente a la línea. Los datos pueden tener una alta varianza explicada y aun así mostrar dispersión alrededor de la recta.",
+          "id_estable": "ec0e8a1dd277",
+          "es_fallback": false
+        },
+        {
+          "id": 12,
+          "tipo": "verdadero_falso",
+          "pregunta": "Una serie temporal es estacionaria si su media, varianza y estructura de autocorrelación son constantes en el tiempo.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La estacionariedad es una propiedad fundamental en series temporales que garantiza que los parámetros estadísticos no cambian con el tiempo, permitiendo realizar predicciones fiables y modelar la estructura de los datos.",
+          "id_estable": "6e09c83530c6",
+          "es_fallback": false
+        },
+        {
+          "id": 13,
+          "tipo": "verdadero_falso",
+          "pregunta": "En un ANOVA de regresión, si el p-valor asociado al estadístico F es mayor que 0.05, aceptamos la hipótesis nula de que todos los coeficientes son cero.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Un p-valor superior al nivel de significancia (0.05) nos impide rechazar la hipótesis nula, lo que significa que no hay evidencia estadística suficiente para afirmar que las variables independientes tengan un efecto lineal real sobre la dependiente.",
+          "id_estable": "47932c682062",
+          "es_fallback": false
+        },
+        {
+          "id": 14,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Explique brevemente la diferencia entre el error estándar de la estimación y el coeficiente de determinación (R²) al evaluar un modelo de regresión.",
+          "opciones": null,
+          "respuesta_correcta": "El R² es una medida relativa y adimensional que indica la proporción de varianza explicada (0 a 1), mientras que el error estándar de la estimación es una medida absoluta expresada en las mismas unidades que la variable dependiente, indicando la magnitud promedio de los residuos.",
+          "explicacion": "El R² permite comparar modelos independientemente de la escala, mientras que el error estándar proporciona una idea directa de la precisión de las predicciones en las unidades originales de los datos.",
+          "id_estable": "d2c96e7d8b05",
+          "es_fallback": false
+        },
+        {
+          "id": 15,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Dado un modelo Y = 5 + 2X, si X aumenta en 3 unidades, ¿cuánto se espera que aumente Y y por qué?",
+          "opciones": null,
+          "respuesta_correcta": "Y aumentará en 6 unidades. Dado que el coeficiente de regresión (pendiente) es 2, cada cambio unitario en X provoca un cambio de 2 unidades en Y.",
+          "explicacion": "La pendiente representa la tasa de cambio de la variable dependiente respecto a la independiente. Multiplicar el incremento de la variable independiente por la pendiente nos da el cambio esperado en la variable dependiente.",
+          "id_estable": "433d89a455e8",
+          "es_fallback": false
+        },
+        {
+          "id": 16,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si usted detecta heterocedasticidad en los residuos de su modelo (varianza no constante), ¿por qué esto es un problema para la inferencia estadística?",
+          "opciones": null,
+          "respuesta_correcta": "La heterocedasticidad viola el supuesto de homocedasticidad de los MCO, lo que sesga los errores estándar de los coeficientes. Esto provoca que las pruebas t y los intervalos de confianza sean inválidos, llevando a conclusiones erróneas sobre la significancia de las variables.",
+          "explicacion": "Los modelos de regresión lineal asumen que la variabilidad del error es constante. Cuando no lo es, las estimaciones de los coeficientes siguen siendo insesgadas, pero dejan de ser eficientes y las pruebas de hipótesis pierden validez.",
+          "id_estable": "1707e4a8e54c",
+          "es_fallback": false
+        },
+        {
+          "id": 17,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Describa cómo la descomposición de una serie temporal ayuda a mejorar la precisión de un pronóstico.",
+          "opciones": null,
+          "respuesta_correcta": "La descomposición permite separar la serie en tendencia, ciclo, estacionalidad y ruido. Al modelar cada componente por separado, es posible eliminar la estacionalidad (desestacionalizar) y predecir mejor la tendencia subyacente, reduciendo el error en el pronóstico final.",
+          "explicacion": "Al aislar los componentes, el analista puede aplicar técnicas específicas para cada uno (por ejemplo, suavizado exponencial para la tendencia y factores estacionales para la estacionalidad), lo que resulta en un modelo mucho más robusto.",
+          "id_estable": "86f7c1a2f81c",
+          "es_fallback": false
+        },
+        {
+          "id": 18,
+          "tipo": "opcion_multiple",
+          "pregunta": "¿Qué problema surge al incluir variables altamente correlacionadas entre sí (multicolinealidad) en un modelo de regresión múltiple?",
+          "opciones": {
+            "A": "Infla la varianza de los coeficientes estimados, haciéndolos inestables.",
+            "B": "Reduce el R² del modelo drásticamente.",
+            "C": "Hace que el intercepto sea siempre negativo.",
+            "D": "Elimina la necesidad de verificar los residuos."
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "La multicolinealidad dificulta que el modelo aísle el efecto individual de cada variable predictora. Esto resulta en errores estándar muy grandes, lo que impide que las variables resulten estadísticamente significativas aunque sean importantes.",
+          "id_estable": "5b6ab13a4256",
+          "es_fallback": false
+        },
+        {
+          "id": 19,
+          "tipo": "verdadero_falso",
+          "pregunta": "La suma de los cuadrados residuales (SSE) siempre disminuye o permanece igual al añadir más variables independientes a un modelo de regresión.",
+          "opciones": {
+            "A": "Verdadero",
+            "B": "Falso"
+          },
+          "respuesta_correcta": "A",
+          "explicacion": "Matemáticamente, añadir una variable extra al modelo siempre permite una mayor flexibilidad para ajustar los datos, lo que resulta en una reducción (o estabilidad) de la suma de errores al cuadrado, independientemente de si la variable es relevante o no.",
+          "id_estable": "156783872abb",
+          "es_fallback": false
+        },
+        {
+          "id": 20,
+          "tipo": "respuesta_abierta",
+          "pregunta": "Si el coeficiente de Pearson entre X e Y es 0.8, ¿cuál es el coeficiente de determinación (R²) y qué significa en este contexto?",
+          "opciones": null,
+          "respuesta_correcta": "El R² es 0.64 (0.8 al cuadrado). Esto significa que el 64% de la variabilidad en la variable dependiente es explicada por la relación lineal con la variable independiente.",
+          "explicacion": "En el modelo de regresión simple, el coeficiente de determinación es exactamente el cuadrado del coeficiente de correlación de Pearson, proporcionando una medida de la bondad de ajuste del modelo lineal.",
+          "id_estable": "cb8c09eda494",
+          "es_fallback": false
+        }
+      ]
+    }
+  }
+}

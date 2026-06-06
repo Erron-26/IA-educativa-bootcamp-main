@@ -59,9 +59,10 @@ def test_temas_has_estadistica():
 def test_temas_contains_basic_concepts():
     from temas import temas
     lista = temas["Estadística"]
-    assert "Probabilidad básica" in lista
-    assert "Media aritmética y ponderada" in lista
-    assert "Varianza y desviación estándar" in lista
+    nombres = [t["nombre"] for t in lista]
+    assert "Fundamentos y Análisis Descriptivo" in nombres
+    assert "Medidas Estadísticas" in nombres
+    assert "Fundamentos de Probabilidad" in nombres
 
 
 # ─────────────────────── gemini_service ───────────────────────
@@ -79,7 +80,7 @@ def test_gemini_service_uses_default_model(monkeypatch):
     with patch("gemini_service.genai.Client") as MockClient:
         from gemini_service import GeminiService
         service = GeminiService()
-    assert service.model_name == "gemini-2.5-flash"
+    assert service.model_name == "gemini-flash-lite-latest"
 
 
 def test_gemini_service_respects_custom_model(monkeypatch):

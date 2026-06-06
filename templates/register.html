@@ -8,21 +8,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <style>
         /* ── Nivel educativo: badge automático ─────────────────── */
-        #nivel-wrapper { margin-top: 4px; }
+        #nivel-wrapper { 
+    margin-top: 4px;
+    min-height: 80px; /* Altura fija para evitar saltos */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
         #nivel-badge {
             display: none;
             align-items: center;
             gap: 10px;
-            padding: 12px 16px;
+            padding: 16px 20px;
             border-radius: var(--border-radius);
-            background: #e8f5e9;
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
             border: 1px solid #a5d6a7;
             font-size: 14px;
             font-weight: 600;
             color: #2e7d32;
+            transition: all 0.3s ease;
         }
-        #nivel-badge .badge-icon { font-size: 20px; }
+        #nivel-badge .badge-icon { font-size: 24px; }
         #nivel-badge .badge-sub {
             font-size: 11px;
             font-weight: 400;
@@ -34,16 +39,24 @@
             margin-top: 2px;
         }
 
-        #nivel-select-wrap { display: none; }
+        #nivel-select-wrap { 
+            display: none;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            transition: all 0.3s ease;
+        }
 
         #nivel-edad-error {
             display: none;
-            padding: 10px 14px;
+            padding: 16px 20px;
             border-radius: var(--border-radius);
-            background: #fff3f3;
-            border: 1px solid #ffcdd2;
+            background: linear-gradient(135deg, #fff3f3 0%, #fef2f2 100%);
+            border: 1px solid #fecaca;
             font-size: 13px;
-            color: #c62828;
+            color: #dc2626;
+            transition: all 0.3s ease;
         }
     </style>
 </head>
@@ -53,9 +66,29 @@
             <div style="font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--gray-500);text-align:center;margin-bottom:12px;">Módulo / Registro de Usuario</div>
             <h1>¡Únete a nosotros!</h1>
 
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
-                <div class="alert alert-error" style="border:1px solid var(--danger-color);border-radius:var(--border-radius);font-size:14px;">{{ messages[0] }}</div>
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}" 
+                       style="border-radius: var(--border-radius); font-size: 14px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+                              {% if category == 'success' %}
+                                background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border: 1px solid #6ee7b7; color: #065f46;
+                              {% elif category == 'error' %}
+                                background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 1px solid #fca5a5; color: #991b1b;
+                              {% elif category == 'warning' %}
+                                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 1px solid #fbbf24; color: #92400e;
+                              {% else %}
+                                background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 1px solid #93c5fd; color: #1e40af;
+                              {% endif %}">
+                    <span style="font-size: 18px;">
+                      {% if category == 'success' %}✅
+                      {% elif category == 'error' %}❌
+                      {% elif category == 'warning' %}⚠️
+                      {% else %}ℹ️{% endif %}
+                    </span>
+                    <span>{{ message }}</span>
+                  </div>
+                {% endfor %}
               {% endif %}
             {% endwith %}
 
@@ -149,7 +182,109 @@
         </div>
     </div>
 
+    <!-- Mensajes de estado mejorados -->
+    <div id="messageContainer" style="position:fixed;top:20px;right:20px;z:9999;display:none;"></div>
+
     <script>
+    // Sistema de mensajes mejorado
+    function showMessage(text, type = 'success') {
+        const container = document.getElementById('messageContainer');
+        const message = document.createElement('div');
+        
+        const styles = {
+            success: {
+                background: 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)',
+                border: '1px solid #6ee7b7',
+                color: '#065f46',
+                icon: '✅'
+            },
+            error: {
+                background: 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)',
+                border: '1px solid #fca5a5',
+                color: '#991b1b',
+                icon: '❌'
+            },
+            info: {
+                background: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
+                border: '1px solid #93c5fd',
+                color: '#1e40af',
+                icon: 'ℹ️'
+            }
+        };
+        
+        const style = styles[type] || styles.info;
+        
+        message.style.cssText = `
+            background: ${style.background};
+            border: 1px solid ${style.border};
+            color: ${style.color};
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: slideInRight 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 300px;
+        `;
+        
+        message.innerHTML = `
+            <span style="font-size: 18px;">${style.icon}</span>
+            <span>${text}</span>
+        `;
+        
+        container.appendChild(message);
+        container.style.display = 'block';
+        
+        // Auto-dismiss después de 5 segundos
+        setTimeout(() => {
+            message.style.animation = 'slideOutRight 0.3s ease-out';
+            setTimeout(() => {
+                if (message.parentNode) {
+                    message.parentNode.removeChild(message);
+                    if (container.children.length === 0) {
+                        container.style.display = 'none';
+                    }
+                }
+            }, 300);
+        }, 5000);
+    }
+
+    // Animaciones para mensajes
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes slideOutRight {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Reemplazar alert() con showMessage
+    window.alert = function(text) {
+        showMessage(text, 'info');
+    };
+
     (function () {
         const edadInput    = document.getElementById('edad-input');
         const badge        = document.getElementById('nivel-badge');
@@ -182,12 +317,20 @@
             badgeTexto.textContent   = nivel.label;
             hiddenInput.value        = nivel.value;
             badge.style.display      = 'flex';
+            badge.style.opacity      = '0';
+            badge.style.transform     = 'translateY(-10px)';
+            
+            setTimeout(() => {
+                badge.style.opacity      = '1';
+                badge.style.transform     = 'translateY(0)';
+            }, 50);
         }
 
         function mostrarSelect() {
             ocultarTodo();
             selectWrap.style.display = 'block';
             selectEl.required        = true;
+            
             // Sincronizar el campo oculto cuando el usuario elige
             selectEl.onchange = () => { hiddenInput.value = selectEl.value; };
             // Si ya tenía algo elegido, restaurarlo
@@ -237,7 +380,7 @@
                 e.preventDefault();
                 if (edad >= 18) {
                     selectEl.focus();
-                    alert('Por favor selecciona tu nivel educativo.');
+                    showMessage('Por favor selecciona tu nivel educativo.', 'info');
                 }
                 return;
             }

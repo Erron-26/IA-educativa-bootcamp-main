@@ -146,7 +146,7 @@ def test_index_redirects_to_visual(client):
     email = register_user(client)
     login_user(client, email)
     response = client.post("/", data={
-        "tema": "Media aritmética y ponderada",
+        "tema": "Medidas Estadísticas",
         "estilo": "Visual",
     })
     assert response.status_code == 302
@@ -157,7 +157,7 @@ def test_index_redirects_to_practico(client):
     email = register_user(client)
     login_user(client, email)
     response = client.post("/", data={
-        "tema": "Probabilidad básica",
+        "tema": "Fundamentos de Probabilidad",
         "estilo": "Práctico",
     })
     assert response.status_code == 302
@@ -195,7 +195,7 @@ def test_visual_renders(client):
     email = register_user(client)
     login_user(client, email)
     with patch("app.buscar_videos_youtube", return_value=[("Video A", "https://youtube.com/watch?v=abc123")]):
-        response = client.get("/visual?tema=Media%20aritm%C3%A9tica%20y%20ponderada")
+        response = client.get("/visual?tema=Medidas%20Estad%C3%ADsticas")
     assert response.status_code == 200
 
 
@@ -213,7 +213,7 @@ def test_visual_without_tema_uses_default(client):
 def test_practico_renders(client):
     email = register_user(client)
     login_user(client, email)
-    response = client.get("/practico?tema=Probabilidad%20b%C3%A1sica")
+    response = client.get("/practico?tema=Fundamentos%20de%20Probabilidad")
     assert response.status_code == 200
 
 

@@ -13,9 +13,29 @@
             <div style="font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: var(--gray-500); text-align: center; margin-bottom: 12px;">Módulo / Autenticación</div>
             <h1>¡Bienvenido de vuelta!</h1>
             
-            {% with messages = get_flashed_messages() %}
+            {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
-                <div class="alert alert-error" style="border: 1px solid var(--danger-color); border-radius: var(--border-radius); font-size: 14px;">{{ messages[0] }}</div>
+                {% for category, message in messages %}
+                  <div class="alert alert-{{ category }}" 
+                       style="border-radius: var(--border-radius); font-size: 14px; padding: 12px 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+                              {% if category == 'success' %}
+                                background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border: 1px solid #6ee7b7; color: #065f46;
+                              {% elif category == 'error' %}
+                                background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border: 1px solid #fca5a5; color: #991b1b;
+                              {% elif category == 'warning' %}
+                                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 1px solid #fbbf24; color: #92400e;
+                              {% else %}
+                                background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 1px solid #93c5fd; color: #1e40af;
+                              {% endif %}">
+                    <span style="font-size: 18px;">
+                      {% if category == 'success' %}✅
+                      {% elif category == 'error' %}❌
+                      {% elif category == 'warning' %}⚠️
+                      {% else %}ℹ️{% endif %}
+                    </span>
+                    <span>{{ message }}</span>
+                  </div>
+                {% endfor %}
               {% endif %}
             {% endwith %}
 

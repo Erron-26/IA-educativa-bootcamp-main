@@ -83,6 +83,12 @@
             color: var(--danger-color);
             border-left: 4px solid var(--danger-color);
         }
+        .feedback.reflection {
+            background: rgba(59, 130, 246, 0.1);
+            color: #2563eb;
+            border-left: 4px solid #3b82f6;
+            display: block;
+        }
 
         /* ================= Mantener estilos originales ================= */
         .evaluation-container {
@@ -247,8 +253,10 @@
             cursor: pointer;
             transition: var(--transition);
             box-shadow: var(--shadow-md);
+            position: relative;
+            overflow: hidden;
         }
-        .btn-evaluate:hover {
+        .btn-evaluate:hover:not(:disabled) {
             transform: translateY(-2px);
             box-shadow: var(--shadow-lg);
         }
@@ -257,6 +265,75 @@
             cursor: not-allowed;
             transform: none;
             box-shadow: none;
+        }
+        
+        /* Indicador de progreso mejorado */
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: var(--gray-600);
+        }
+        
+        .progress-indicator .completed {
+            color: var(--success-color);
+            font-weight: 600;
+        }
+        
+        /* Tooltip informativo */
+        .help-tooltip {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--gray-800);
+            color: var(--white);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        
+        .help-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 4px solid transparent;
+            border-top-color: var(--gray-800);
+        }
+        
+        .btn-evaluate:hover .help-tooltip {
+            opacity: 1;
+        }
+
+        /* Estados del botón de evaluación */
+        .btn-evaluate.ready {
+            background: linear-gradient(135deg, #16a34a 0%, #22c55e 100%);
+            animation: pulse 2s infinite;
+        }
+        
+        .btn-evaluate.evaluating {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+
+        /* Indicador de pool de preguntas */
+        #poolInfo.nuevas {
+            background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+        #poolInfo.repaso {
+            background: linear-gradient(135deg, #fff8e1 0%, #fffbf0 100%);
+            color: #f57f17;
+            border: 1px solid #ffe082;
         }
 
         /* Botón volver al inicio — solo aparece al terminar la evaluación */
@@ -291,10 +368,16 @@
         <div class="evaluation-header">
             <h2>📝 Evaluación Práctica</h2>
             <div class="topic-badge">{{ tema }}</div>
+            <div id="poolInfo"
+                 style="margin: 12px auto 8px; padding: 6px 14px; border-radius: var(--border-radius); font-size: 0.85rem; display: none; max-width: 400px; text-align: center;">
+            </div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <p>Responde todas las preguntas y presiona "Evaluar" al final</p>
+            <div id="fallbackBanner" style="display:none; background: #fff3cd; border: 1px solid #f0c040; border-radius: var(--border-radius); padding: 12px 18px; margin: 15px 0; font-size: 0.95rem; color: #664d03;">
+                ⚠️ No se pudieron generar preguntas personalizadas. Intenta de nuevo en unos segundos.
+            </div>
             <div id="resultStats" class="result-stats" style="display:none;">
                 <div class="stat good">Buenas: <span id="statBuenas">0</span></div>
                 <div class="stat bad">Malas: <span id="statMalas">0</span></div>
@@ -403,7 +486,9 @@
     });
 
     async function cargarPreguntas() {
+        const elementoFrase = document.getElementById('loadingPhrases');
         try {
+            const inicioRed = Date.now();
             const response = await fetch('/generar_preguntas', {
                 method: 'POST',
                 headers: {
@@ -415,30 +500,85 @@
             });
             
             const resultado = await response.json();
-            
+            const tiempoReal = Date.now() - inicioRed;
+
             if (resultado.success) {
+                const fuente = resultado.fuente || 'banco';
+
+                // Delay inteligente: si vino del banco instantáneo, mostramos
+                // al menos 700ms de skeleton para no causar un parpadeo
+                let delayMinimo = 0;
+                if (fuente === 'banco' || fuente === 'cache') {
+                    delayMinimo = Math.max(0, 700 - tiempoReal);
+                } else if (fuente === 'gemini_live') {
+                    delayMinimo = Math.max(0, 1200 - tiempoReal);
+                }
+
+                if (delayMinimo > 0) {
+                    await new Promise(r => setTimeout(r, delayMinimo));
+                }
+
                 // Actualizar el array de preguntas
                 preguntas.length = 0;
                 preguntas.push(...resultado.preguntas);
                 
+                // Mostrar banner si es fallback
+                if (resultado.fallback) {
+                    document.getElementById('fallbackBanner').style.display = 'block';
+                }
+
+                // Badge contextual de fuente
+                const badgeFuente = {
+                    'banco':       { texto: '📚 Preguntas curadas para tu nivel', clase: 'nuevas' },
+                    'cache':       { texto: '🔁 Preguntas de sesiones anteriores', clase: 'nuevas' },
+                    'gemini_live': { texto: '✨ Preguntas generadas por IA para ti', clase: 'nuevas' },
+                    'fallback':    { texto: '⚠️ Usando banco de respaldo', clase: 'repaso' },
+                }[fuente] || { texto: '📊 Preguntas cargadas', clase: 'nuevas' };
+
+                // Mostrar info de ronda/pool
+                if (resultado.info_ronda) {
+                    const r = resultado.info_ronda;
+                    const el = document.getElementById('poolInfo');
+                    let texto, clase;
+                    if (r.en_rotacion) {
+                        texto = `🔄 Repaso — has visto todas las ${r.total_pool} preguntas`;
+                        clase = 'repaso';
+                    } else {
+                        texto = `${badgeFuente.texto} · ${r.vistas}/${r.total_pool} vistas`;
+                        clase = badgeFuente.clase;
+                    }
+                    el.textContent = texto;
+                    el.className = clase;
+                    el.style.display = 'block';
+                }
+
                 // Renderizar preguntas dinámicamente
                 renderizarPreguntas(resultado.preguntas);
                 
-                // Ocultar skeleton y mostrar preguntas
+                // Ocultar skeleton y mostrar preguntas con fade
                 detenerRotacionFrases();
-                document.getElementById('skeletonContainer').style.display = 'none';
-                document.getElementById('questionsContainer').style.display = 'block';
+                const skeleton = document.getElementById('skeletonContainer');
+                skeleton.style.transition = 'opacity 0.3s ease';
+                skeleton.style.opacity = '0';
+                setTimeout(() => {
+                    skeleton.style.display = 'none';
+                    const qc = document.getElementById('questionsContainer');
+                    qc.style.opacity = '0';
+                    qc.style.display = 'block';
+                    qc.style.transition = 'opacity 0.4s ease';
+                    requestAnimationFrame(() => { qc.style.opacity = '1'; });
+                }, 300);
                 
                 updateProgress();
             } else {
                 detenerRotacionFrases();
-                document.getElementById('loadingPhrases').textContent = 'Error al generar preguntas';
+                if (elementoFrase) elementoFrase.textContent = 'Error al generar preguntas';
                 console.error('Error cargando preguntas:', resultado.error);
                 alert('Error generando preguntas: ' + resultado.error);
             }
         } catch (error) {
             detenerRotacionFrases();
-            document.getElementById('loadingPhrases').textContent = 'Error de conexión';
+            if (elementoFrase) elementoFrase.textContent = 'Error de conexión';
             console.error('Error de conexión:', error);
             alert('Error de conexión al cargar preguntas');
         }
@@ -468,16 +608,16 @@
             } else if (pregunta.tipo === 'respuesta_abierta') {
                 optionsHtml = `
                     <textarea class="open-response" name="pregunta_${pregunta.id}" 
-                              placeholder="Escribe tu respuesta aquí..."></textarea>
+                              placeholder="Escribe tu reflexión o procedimiento aquí (no afecta la nota final, se comparará con la respuesta del experto)..."></textarea>
                 `;
             }
             
             const tipoTexto = pregunta.tipo === 'opcion_multiple' ? 'Opción Múltiple' :
-                            pregunta.tipo === 'verdadero_falso' ? 'Verdadero/Falso' : 'Respuesta Abierta';
+                            pregunta.tipo === 'verdadero_falso' ? 'Verdadero/Falso' : 'Ejercicio de Reflexión';
             
             questionDiv.innerHTML = `
                 <div class="question-header">
-                    <span class="question-number">Pregunta ${pregunta.id}</span>
+                    <span class="question-number">Pregunta ${index + 1}</span>
                     <span class="question-type">${tipoTexto}</span>
                 </div>
                 <div class="question-text">${pregunta.pregunta}</div>
@@ -492,8 +632,9 @@
         const actionsDiv = document.createElement('div');
         actionsDiv.className = 'evaluation-actions';
         actionsDiv.innerHTML = `
-            <button type="button" class="btn-evaluate" onclick="evaluarRespuestas()">
-                📊 Evaluar Respuestas
+            <button type="button" class="btn-evaluate" id="evaluateBtn" onclick="evaluarRespuestas()">
+                <span>📊 Evaluar Respuestas</span>
+                <span class="help-tooltip">Completa todas las preguntas para habilitar</span>
             </button>
         `;
         form.appendChild(actionsDiv);
@@ -519,20 +660,80 @@
                 if(document.querySelector(`input[name="${qid}"]:checked`)) answeredQuestions++;
             }
         });
-        document.getElementById('progressFill').style.width = (answeredQuestions/totalQuestions)*100 + '%';
-        const btn = document.querySelector('.btn-evaluate');
-        btn.disabled = answeredQuestions !== totalQuestions;
+        
+        // Actualizar barra de progreso
+        const progressFill = document.getElementById('progressFill');
+        const progressPercent = (answeredQuestions/totalQuestions)*100;
+        progressFill.style.width = progressPercent + '%';
+        
+        // Actualizar botón de evaluación
+        const btn = document.getElementById('evaluateBtn');
+        
+        if (answeredQuestions === totalQuestions) {
+            btn.disabled = false;
+            btn.classList.add('ready');
+            btn.innerHTML = `
+                <span>📊 Evaluar Respuestas</span>
+                <span class="help-tooltip">¡Listo para evaluar!</span>
+            `;
+        } else {
+            btn.disabled = true;
+            btn.classList.remove('ready');
+            btn.innerHTML = `
+                <span>📊 Evaluar Respuestas</span>
+                <span class="help-tooltip">Completa todas las preguntas para habilitar</span>
+            `;
+        }
+        
+        // Mostrar indicador de progreso detallado
+        updateProgressIndicator(answeredQuestions, totalQuestions);
+    }
+
+    function updateProgressIndicator(completed, total) {
+        let indicator = document.querySelector('.progress-indicator');
+        if (!indicator) {
+            indicator = document.createElement('div');
+            indicator.className = 'progress-indicator';
+            document.querySelector('.progress-bar').parentNode.insertBefore(indicator, document.querySelector('.progress-bar').nextSibling);
+        }
+        
+        const closedQuestions = preguntas.filter(p => p.tipo !== 'respuesta_abierta').length;
+        const closedCompleted = preguntas.filter(p => {
+            if (p.tipo === 'respuesta_abierta') return false;
+            const qid = `pregunta_${p.id}`;
+            return document.querySelector(`input[name="${qid}"]:checked`);
+        }).length;
+        
+        const openQuestions = preguntas.filter(p => p.tipo === 'respuesta_abierta').length;
+        const openCompleted = preguntas.filter(p => {
+            if (p.tipo !== 'respuesta_abierta') return false;
+            const qid = `pregunta_${p.id}`;
+            return document.querySelector(`textarea[name="${qid}"]`).value.trim();
+        }).length;
+        
+        indicator.innerHTML = `
+            <span>Preguntas cerradas: <span class="completed">${closedCompleted}</span>/${closedQuestions}</span>
+            <span>•</span>
+            <span>Preguntas abiertas: <span class="completed">${openCompleted}</span>/${openQuestions}</span>
+            <span>•</span>
+            <span>Total: <span class="completed">${completed}</span>/${total}</span>
+        `;
     }
 
     async function evaluarRespuestas() {
         const btn = document.querySelector('.btn-evaluate');
         btn.disabled = true;
-        btn.textContent = '🔄 Evaluando...';
+        btn.classList.remove('ready');
+        btn.classList.add('evaluating');
+        btn.innerHTML = `
+            <span>🔄 Evaluando...</span>
+            <span class="help-tooltip">Analizando tus respuestas...</span>
+        `;
 
         const container = document.getElementById('questionsContainer');
         const overlay = document.createElement('div');
         overlay.className = 'evaluating-overlay';
-        overlay.innerHTML = '<div class="spinner"></div>';
+        overlay.innerHTML = '<div class="spinner"></div><div style="color: var(--gray-600); margin-top: 10px; font-size: 14px; text-align: center;">Procesando respuestas...</div>';
         container.style.position = 'relative';
         container.appendChild(overlay);
 
@@ -559,14 +760,53 @@
                 resultado.respuestas.forEach((r,i)=>{
                     const fb = document.getElementById(`feedback_${preguntas[i].id}`);
                     fb.style.display='flex';
-                    fb.className='feedback '+(r.correcta?'correct':'incorrect');
-                    fb.innerHTML=`${r.correcta?'✅':'❌'} ${r.explicacion}`;
+                    
+                    if (preguntas[i].tipo === 'respuesta_abierta') {
+                        // Pregunta abierta - mostrar feedback de reflexión
+                        fb.className = 'feedback reflection';
+                        fb.innerHTML = `
+                            <div style="flex: 1;">
+                                <div style="margin-bottom: 12px;">
+                                    <strong>📝 Tu respuesta:</strong>
+                                    <div style="background: rgba(59, 130, 246, 0.1); padding: 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid #3b82f6;">
+                                        ${respuestas[preguntas[i].id] || '(No respondida)'}
+                                    </div>
+                                </div>
+                                <div>
+                                    <strong>💡 Respuesta sugerida:</strong>
+                                    <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid #10b981;">
+                                        ${r.respuesta_correcta}
+                                    </div>
+                                </div>
+                                <div style="margin-top: 12px;">
+                                    <strong>🧠 Explicación del experto:</strong>
+                                    <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid #f97316;">
+                                        ${r.explicacion}
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // Pregunta cerrada - mostrar feedback normal
+                        fb.className = 'feedback ' + (r.correcta ? 'correct' : 'incorrect');
+                        fb.innerHTML = `
+                            <span style="font-size: 20px; margin-right: 8px;">${r.correcta ? '✅' : '❌'}</span>
+                            <div>
+                                <strong>${r.correcta ? '¡Correcto!' : 'Incorrecto'}</strong>
+                                <div style="margin-top: 4px; font-size: 14px; color: var(--gray-600);">
+                                    ${r.explicacion}
+                                </div>
+                            </div>
+                        `;
+                    }
                 });
 
-                // Mostrar estadísticas arriba: buenas, malas y total
-                const total = resultado.respuestas.length;
-                const buenas = resultado.respuestas.filter(r => r.correcta).length;
+                // Mostrar estadísticas arriba: solo de preguntas cerradas calificadas
+                const calificadas = resultado.respuestas.filter(r => r.correcta !== null);
+                const total = calificadas.length;
+                const buenas = calificadas.filter(r => r.correcta === true).length;
                 const malas = total - buenas;
+                
                 document.getElementById('statBuenas').textContent = buenas;
                 document.getElementById('statMalas').textContent = malas;
                 document.getElementById('statTotal').textContent = total;
@@ -575,7 +815,9 @@
 
                 // Ocultar "Evaluar Respuestas" y mostrar "Volver al Inicio"
                 const btnEvaluar = document.querySelector('.btn-evaluate');
-                if (btnEvaluar) btnEvaluar.style.display = 'none';
+                if (btnEvaluar) {
+                    btnEvaluar.style.display = 'none';
+                }
 
                 const actionsDiv = document.querySelector('.evaluation-actions');
                 if (actionsDiv && !actionsDiv.querySelector('.btn-home')) {
@@ -584,18 +826,37 @@
                     btnVolver.className = 'btn-home';
                     btnVolver.innerHTML = '🏠 Volver al Inicio';
                     actionsDiv.appendChild(btnVolver);
+                    
+                    // Mostrar mensaje de conclusión
+                    const conclusion = document.createElement('div');
+                    conclusion.style.cssText = `
+                        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                        border: 1px solid #7dd3fc;
+                        border-radius: var(--border-radius);
+                        padding: 20px;
+                        margin-top: 20px;
+                        text-align: center;
+                        color: #0369a1;
+                    `;
+                    conclusion.innerHTML = `
+                        <h3 style="margin-bottom: 10px; font-family: 'Playfair Display', serif;">🎉 ¡Evaluación completada!</h3>
+                        <p style="margin-bottom: 8px;">Has respondido ${preguntas.length} preguntas de reflexión y aprendizaje.</p>
+                        <p>Las preguntas ${total > 0 ? `cerradas (${buenas}/${total}) correctas` : 'cerradas'} contribuyen a tu calificación.</p>
+                    `;
+                    actionsDiv.parentNode.insertBefore(conclusion, actionsDiv);
                 }
             } else {
-                alert('Error al evaluar: '+resultado.error);
+                showMessage('Error al evaluar: ' + resultado.error, 'error');
             }
 
         } catch(err){
             console.error(err);
-            alert('Error de conexión');
+            showMessage('Error de conexión', 'error');
         } finally {
             overlay.remove();
             btn.disabled=false;
-            btn.textContent='📊 Evaluar Respuestas';
+            btn.classList.remove('evaluating');
+            btn.innerHTML = '📊 Evaluar Respuestas';
         }
     }
 </script>
