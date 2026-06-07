@@ -320,9 +320,9 @@ def index():
             return redirect(url_for("index"))
 
         if estilo == "Visual":
-            return redirect(url_for("visual", nombre=nombre_estudiante, tema=tema))
+            return redirect(url_for("visual", tema=tema))
         elif estilo == "Práctico":
-            return redirect(url_for("practico", nombre=nombre_estudiante, tema=tema))
+            return redirect(url_for("practico", tema=tema))
 
     return render_template("index.html", nombre=nombre_estudiante, temas=[t["nombre"] for t in _temas_lista])
 
@@ -360,7 +360,7 @@ def buscar_recursos_web(subtema: str, cantidad: int = 5) -> list:
 @app.route("/visual")
 @login_required
 def visual():
-    nombre  = request.args.get("nombre")
+    nombre  = session.get("student_data", {}).get("nombre", "Estudiante")
     tema    = request.args.get("tema")
     subtema = request.args.get("subtema", "").strip()
 
@@ -405,7 +405,7 @@ def visual():
 @app.route("/practico", methods=["GET", "POST"])
 @login_required
 def practico():
-    nombre = request.args.get("nombre")
+    nombre = session.get("student_data", {}).get("nombre", "Estudiante")
     tema   = request.args.get("tema")
 
     if not tema:

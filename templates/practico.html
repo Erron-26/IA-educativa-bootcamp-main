@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Evaluación Práctica - {{ tema }}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css', v='3') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <style>
         /* ================= Skeleton Loading ================= */
@@ -363,6 +363,25 @@
 </head>
 <body>
 <div class="container">
+
+    {# ── Header global de navegación ── #}
+    <div class="app-header">
+        <div class="app-header-left">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary" aria-label="Volver al inicio">
+                🔙 Inicio
+            </a>
+            <span class="header-context">Tema: <strong>{{ tema }}</strong></span>
+        </div>
+        <div class="app-header-right">
+            <a href="{{ url_for('perfil') }}" class="btn btn-primary" aria-label="Ver mi perfil">
+                👤 {{ nombre }}
+            </a>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary" aria-label="Cerrar sesión">
+                Cerrar Sesión
+            </a>
+        </div>
+    </div>
+
     <div class="evaluation-container">
 
         <div class="evaluation-header">
@@ -410,6 +429,94 @@
 </div>
 
 <script>
+    // ── Sistema de mensajes (reemplaza alert() nativo) ────────────
+    const messageStyles = {
+        success: {
+            background: 'linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%)',
+            border: '1px solid #6ee7b7',
+            color: '#065f46',
+            icon: '✅'
+        },
+        error: {
+            background: 'linear-gradient(135deg, #fee2e2 0%, #fecaca 100%)',
+            border: '1px solid #fca5a5',
+            color: '#991b1b',
+            icon: '❌'
+        },
+        warning: {
+            background: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
+            border: '1px solid #fbbf24',
+            color: '#92400e',
+            icon: '⚠️'
+        },
+        info: {
+            background: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
+            border: '1px solid #93c5fd',
+            color: '#1e40af',
+            icon: 'ℹ️'
+        },
+    };
+
+    function showMessage(text, type = 'info') {
+        let container = document.getElementById('messageContainer');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'messageContainer';
+            container.style.cssText = 'position:fixed;top:20px;right:20px;z-index:9999;display:none;';
+            document.body.appendChild(container);
+        }
+
+        const style = messageStyles[type] || messageStyles.info;
+        const message = document.createElement('div');
+        message.style.cssText = `
+            background: ${style.background};
+            border: ${style.border};
+            color: ${style.color};
+            padding: 16px 20px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            animation: msgSlideIn 0.3s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 300px;
+            max-width: 420px;
+        `;
+        message.innerHTML = `<span style="font-size: 18px;">${style.icon}</span><span>${text}</span>`;
+        container.appendChild(message);
+        container.style.display = 'block';
+
+        setTimeout(() => {
+            message.style.animation = 'msgSlideOut 0.3s ease-out';
+            setTimeout(() => {
+                if (message.parentNode) message.parentNode.removeChild(message);
+                if (container.children.length === 0) container.style.display = 'none';
+            }, 300);
+        }, 5000);
+    }
+
+    // Inyectar keyframes de animación una sola vez
+    (function injectMsgAnimations() {
+        if (document.getElementById('msg-animations')) return;
+        const style = document.createElement('style');
+        style.id = 'msg-animations';
+        style.textContent = `
+            @keyframes msgSlideIn {
+                from { opacity: 0; transform: translateX(100%); }
+                to   { opacity: 1; transform: translateX(0); }
+            }
+            @keyframes msgSlideOut {
+                from { opacity: 1; transform: translateX(0); }
+                to   { opacity: 0; transform: translateX(100%); }
+            }
+        `;
+        document.head.appendChild(style);
+    })();
+
     let preguntas = [];
     const frasesCarga = [
         "Generando conocimiento...",
@@ -521,7 +628,7 @@
                 // Actualizar el array de preguntas
                 preguntas.length = 0;
                 preguntas.push(...resultado.preguntas);
-                
+
                 // Mostrar banner si es fallback
                 if (resultado.fallback) {
                     document.getElementById('fallbackBanner').style.display = 'block';
@@ -554,7 +661,7 @@
 
                 // Renderizar preguntas dinámicamente
                 renderizarPreguntas(resultado.preguntas);
-                
+
                 // Ocultar skeleton y mostrar preguntas con fade
                 detenerRotacionFrases();
                 const skeleton = document.getElementById('skeletonContainer');
@@ -568,19 +675,19 @@
                     qc.style.transition = 'opacity 0.4s ease';
                     requestAnimationFrame(() => { qc.style.opacity = '1'; });
                 }, 300);
-                
+
                 updateProgress();
             } else {
                 detenerRotacionFrases();
                 if (elementoFrase) elementoFrase.textContent = 'Error al generar preguntas';
                 console.error('Error cargando preguntas:', resultado.error);
-                alert('Error generando preguntas: ' + resultado.error);
+                showMessage('Error generando preguntas: ' + resultado.error, 'error');
             }
         } catch (error) {
             detenerRotacionFrases();
             if (elementoFrase) elementoFrase.textContent = 'Error de conexión';
             console.error('Error de conexión:', error);
-            alert('Error de conexión al cargar preguntas');
+            showMessage('Error de conexión al cargar preguntas', 'error');
         }
     }
 
@@ -824,6 +931,7 @@
                     const btnVolver = document.createElement('a');
                     btnVolver.href = '/';
                     btnVolver.className = 'btn-home';
+                    btnVolver.setAttribute('aria-label', 'Volver a la página de inicio');
                     btnVolver.innerHTML = '🏠 Volver al Inicio';
                     actionsDiv.appendChild(btnVolver);
                     

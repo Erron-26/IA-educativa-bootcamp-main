@@ -331,7 +331,6 @@ input:hover, select:hover, textarea:hover {
     padding: 15px 20px;
     border-radius: var(--border-radius);
     margin-bottom: 20px;
-    border-left: 4px solid;
     animation: slideIn 0.5s ease-out;
     position: relative;
     overflow: hidden;
@@ -641,6 +640,72 @@ input:hover, select:hover, textarea:hover {
 
 .auth-links a:hover::after {
     width: 100%;
+}
+
+/* ===== APP HEADER (modo visual y práctico) ===== */
+.app-header {
+    background: var(--white);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 22px;
+    margin-bottom: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    animation: slideIn 0.5s ease-out;
+}
+
+.app-header-left,
+.app-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.app-header .header-context {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-500);
+    padding: 6px 12px;
+    background: var(--gray-100);
+    border-radius: var(--border-radius);
+    border-left: 3px solid var(--primary-color);
+}
+
+.app-header .header-context strong {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.app-header .btn {
+    padding: 8px 16px;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .app-header {
+        padding: 12px 14px;
+    }
+    .app-header-left,
+    .app-header-right {
+        width: 100%;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .app-header .header-context {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+    .app-header .btn {
+        padding: 7px 12px;
+        font-size: 13px;
+    }
 }
 
 /* ===== UTILIDADES ===== */

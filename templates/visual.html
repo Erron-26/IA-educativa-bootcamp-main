@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modo Visual - {{ tema }}</title>
     <meta name="description" content="Aprende {{ tema }} con videos educativos, PDFs y recursos seleccionados para ti.">
-    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css', v='3') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <style>
         /* ── Sección de bienvenida ── */
@@ -304,16 +304,34 @@
 <body>
 <div class="container glass-effect">
 
+    {# ── Header global de navegación ── #}
+    <div class="app-header">
+        <div class="app-header-left">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary" aria-label="Volver al inicio">
+                🔙 Inicio
+            </a>
+            <span class="header-context">Tema: <strong>{{ tema }}</strong></span>
+        </div>
+        <div class="app-header-right">
+            <a href="{{ url_for('perfil') }}" class="btn btn-primary" aria-label="Ver mi perfil">
+                👤 {{ nombre }}
+            </a>
+            <a href="{{ url_for('logout') }}" class="btn btn-secondary" aria-label="Cerrar sesión">
+                Cerrar Sesión
+            </a>
+        </div>
+    </div>
+
     {# ── Sección de bienvenida ── #}
     <div class="welcome-section">
         <h2>👋 ¡Hola {{ nombre }}!</h2>
         <div class="topic-badge">{{ tema }}</div>
         <p class="intro-text">{{ introduccion }}</p>
         <div class="action-buttons">
-            <a href="{{ url_for('practico', nombre=nombre, tema=tema) }}" class="btn btn-success">
+            <a href="{{ url_for('practico', tema=tema) }}" class="btn btn-success" aria-label="Iniciar ejercicios prácticos sobre este tema">
                 🧠 Realizar Ejercicio
             </a>
-            <a href="{{ url_for('index') }}" class="btn btn-secondary">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary" aria-label="Volver a la página de inicio">
                 🔙 Volver al Inicio
             </a>
         </div>
@@ -326,12 +344,12 @@
         <div class="subtemas-bar" id="subtemas-bar">
             {# Chip "Todos" #}
             <a class="subtema-chip chip-all {% if not subtema %}active{% endif %}"
-               href="{{ url_for('visual', nombre=nombre, tema=tema) }}">
+               href="{{ url_for('visual', tema=tema) }}">
                 🔍 Todos
             </a>
             {% for st in subtemas_lista %}
             <a class="subtema-chip {% if subtema == st %}active{% endif %}"
-               href="{{ url_for('visual', nombre=nombre, tema=tema, subtema=st) }}">
+               href="{{ url_for('visual', tema=tema, subtema=st) }}">
                 {{ st }}
             </a>
             {% endfor %}
@@ -431,10 +449,10 @@
 
     {# ── Botones finales ── #}
     <div class="action-buttons" style="margin-top: 10px; margin-bottom: 30px;">
-        <a href="{{ url_for('practico', nombre=nombre, tema=tema) }}" class="btn btn-primary">
+        <a href="{{ url_for('practico', tema=tema) }}" class="btn btn-primary" aria-label="Continuar a los ejercicios prácticos">
             ✏️ Continuar con Ejercicios
         </a>
-        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary" aria-label="Ir al inicio">
             🏠 Ir al Inicio
         </a>
     </div>
