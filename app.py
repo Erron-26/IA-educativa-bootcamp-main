@@ -3,6 +3,7 @@ import sys
 import random
 import time
 import functools
+# pyrefly: ignore [missing-import]
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -13,6 +14,7 @@ if sys.platform == "win32":
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 # ─────────────────────────────────────────────────────────────────────────────
 
+# pyrefly: ignore [missing-import]
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 from busquedas import buscar_videos_youtube
 from temas import temas
@@ -25,9 +27,91 @@ app.secret_key = os.getenv("FLASK_SECRET_KEY", "clave_secreta_demo")
 
 _gemini_service = None
 _youtube_cache = {}
+_recursos_cache = {}
 
 _temas_lista = temas["Estadística"]  # list[dict]
 _temas_por_nombre = {t["nombre"]: t for t in _temas_lista}
+
+# ── Estructura académica de subtemas por categoría ────────────────────────────
+TEMAS_ESTADISTICA = {
+    "Fundamentos y Análisis Descriptivo": [
+        "Conceptos básicos de estadística",
+        "Tipos de variables",
+        "Escalas de medición",
+        "Población y muestra",
+        "Recolección de datos",
+        "Organización de datos",
+        "Tablas de frecuencia",
+        "Distribución de frecuencias",
+    ],
+    "Medidas Estadísticas": [
+        "Media",
+        "Mediana",
+        "Moda",
+        "Cuartiles",
+        "Deciles",
+        "Percentiles",
+        "Rango",
+        "Varianza",
+        "Desviación estándar",
+        "Coeficiente de variación",
+        "Asimetría",
+        "Curtosis",
+        "Interpretación de resultados",
+    ],
+    "Fundamentos de Probabilidad": [
+        "Experimentos aleatorios",
+        "Espacio muestral",
+        "Eventos y sucesos",
+        "Principio multiplicativo",
+        "Permutaciones",
+        "Combinaciones",
+        "Probabilidad clásica",
+        "Probabilidad frecuencial",
+        "Probabilidad subjetiva",
+        "Probabilidad condicional",
+        "Teorema de Bayes",
+        "Eventos independientes y dependientes",
+    ],
+    "Distribuciones de Probabilidad": [
+        "Bernoulli",
+        "Binomial",
+        "Poisson",
+        "Hipergeométrica",
+        "Uniforme",
+        "Normal",
+        "Exponencial",
+        "t de Student",
+        "Chi-cuadrado",
+        "Cálculo de probabilidades",
+        "Uso de tablas estadísticas",
+        "Interpretación de distribuciones",
+    ],
+    "Inferencia Estadística": [
+        "Muestreo",
+        "Distribuciones muestrales",
+        "Estimación puntual",
+        "Intervalos de confianza",
+        "Pruebas de hipótesis",
+        "Errores tipo I y II",
+        "Pruebas para medias",
+        "Pruebas para proporciones",
+        "Comparación de grupos",
+        "Interpretación de resultados",
+    ],
+    "Modelado y Análisis de Relaciones": [
+        "Covarianza",
+        "Correlación Pearson",
+        "Correlación Spearman",
+        "Regresión lineal simple",
+        "Regresión lineal múltiple",
+        "Coeficiente de determinación R²",
+        "Predicción de valores",
+        "Análisis de residuos",
+        "Interpretación de modelos",
+        "Aplicaciones en negocios e investigación",
+    ],
+}
 
 
 def obtener_info_tema(tema_nombre: str) -> dict | None:
@@ -243,12 +327,42 @@ def index():
     return render_template("index.html", nombre=nombre_estudiante, temas=[t["nombre"] for t in _temas_lista])
 
 
+# ── Búsqueda de recursos web/PDFs con DuckDuckGo ──────────────────────────────
+def buscar_recursos_web(subtema: str, cantidad: int = 5) -> list:
+    """Busca PDFs y recursos educativos en la web via DuckDuckGo."""
+    ahora = time.time()
+    clave = f"{subtema}_{cantidad}"
+    if clave in _recursos_cache:
+        resultados, ts = _recursos_cache[clave]
+        if ahora - ts < 600:
+            return resultados
+
+    try:
+        # pyrefly: ignore [missing-import]
+        from duckduckgo_search import DDGS
+        query = f"{subtema} estadística filetype:pdf"
+        resultados = []
+        with DDGS() as ddgs:
+            for r in ddgs.text(query, max_results=cantidad):
+                resultados.append({
+                    "titulo":      r.get("title", subtema),
+                    "url":         r.get("href", ""),
+                    "descripcion": r.get("body", "")[:200],
+                })
+        _recursos_cache[clave] = (resultados, time.time())
+        return resultados
+    except Exception as e:
+        print(f"[buscar_recursos_web] Error: {e}")
+        return []
+
+
 # ---------------------- VISUAL ------------------------
 @app.route("/visual")
 @login_required
 def visual():
-    nombre = request.args.get("nombre")
-    tema   = request.args.get("tema")
+    nombre  = request.args.get("nombre")
+    tema    = request.args.get("tema")
+    subtema = request.args.get("subtema", "").strip()
 
     if not tema:
         tema = "Tema no especificado"
@@ -259,9 +373,17 @@ def visual():
         f"En esta sección aprenderás su aplicación práctica, ejemplos visuales y cómo interpretarlo."
     )
 
-    videos = get_youtube_videos(f"{tema} Estadística", 6, ttl=600)
+    # Subtemas disponibles para la categoría actual
+    subtemas_lista = TEMAS_ESTADISTICA.get(tema, [])
+
+    # Query dinámica: subtema seleccionado o el tema general
+    query_videos = f"{subtema} Estadística" if subtema else f"{tema} Estadística"
+    videos = get_youtube_videos(query_videos, 6, ttl=600)
     random.shuffle(videos)
     videos = videos[:3]
+
+    # Recursos web/PDFs solo si hay subtema seleccionado
+    recursos = buscar_recursos_web(subtema) if subtema else []
 
     user_id = session.get('user')
     if user_id:
@@ -271,8 +393,11 @@ def visual():
         "visual.html",
         nombre=nombre,
         tema=tema,
+        subtema=subtema,
+        subtemas_lista=subtemas_lista,
         introduccion=introduccion,
         videos=videos,
+        recursos=recursos,
     )
 
 

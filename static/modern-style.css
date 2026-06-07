@@ -692,3 +692,39 @@ input:hover, select:hover, textarea:hover {
 .style-option.active * {
     color: var(--white) !important;
 }
+
+/* ===== VISUAL PAGE — CHIPS + COLUMNAS + PDF CARDS ===== */
+
+/* Loading skeleton para cards de recursos */
+@keyframes skeleton-shimmer {
+    0%   { background-position: -400px 0; }
+    100% { background-position: 400px 0; }
+}
+.skeleton {
+    background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 50%, var(--gray-100) 75%);
+    background-size: 800px 100%;
+    animation: skeleton-shimmer 1.4s infinite;
+    border-radius: var(--border-radius);
+}
+
+/* Scroll snap suave en móvil para la barra de chips */
+@media (max-width: 600px) {
+    .subtemas-bar {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 6px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+    .subtemas-bar::-webkit-scrollbar {
+        height: 3px;
+    }
+    .subtemas-bar::-webkit-scrollbar-thumb {
+        background: var(--gray-300);
+        border-radius: 99px;
+    }
+    .subtema-chip {
+        scroll-snap-align: start;
+        flex-shrink: 0;
+    }
+}

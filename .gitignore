@@ -54,3 +54,7 @@ Thumbs.db
 .env.test.local
 .env.production.local
 
+# SQLite WAL files
+educativa.db-shm
+educativa.db-wal
+

@@ -23,3 +23,6 @@ waitress>=3.0.0
 
 # Herramientas de construcción
 setuptools>=65.0
+
+# Búsqueda web de recursos educativos (PDFs, artículos) sin API de pago
+duckduckgo-search>=6.0

@@ -4,45 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modo Visual - {{ tema }}</title>
+    <meta name="description" content="Aprende {{ tema }} con videos educativos, PDFs y recursos seleccionados para ti.">
     <link rel="stylesheet" href="{{ url_for('static', filename='modern-style.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
     <style>
-        .video-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin: 30px 0;
-        }
-        .video-card {
-            background: var(--white);
-            border-radius: var(--border-radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            transition: var(--transition);
-        }
-        .video-card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-xl);
-        }
-        .video-card iframe {
-            width: 100%;
-            height: 200px;
-            border: none;
-        }
-        .video-info {
-            padding: 20px;
-        }
-        .video-title {
-            font-weight: 600;
-            color: var(--gray-800);
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
+        /* ── Sección de bienvenida ── */
         .welcome-section {
             background: var(--white);
             border-radius: var(--border-radius-lg);
             padding: 30px;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             box-shadow: var(--shadow-lg);
             text-align: center;
         }
@@ -65,28 +36,275 @@
         }
         .intro-text {
             color: var(--gray-600);
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.6;
-            margin: 20px 0;
+            margin: 16px 0;
         }
         .action-buttons {
             display: flex;
             gap: 15px;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 24px;
             flex-wrap: wrap;
         }
+
+        /* ── Selector de subtemas (chips con scroll) ── */
+        .subtemas-wrapper {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 20px 24px;
+            margin-bottom: 32px;
+            box-shadow: var(--shadow-md);
+            border-top: 3px solid transparent;
+            border-image: var(--primary-gradient) 1;
+        }
+        .subtemas-wrapper h3 {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray-500);
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+        .subtemas-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .subtema-chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 7px 16px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-decoration: none;
+            border: 1.5px solid var(--gray-300);
+            color: var(--gray-700);
+            background: var(--white);
+            transition: var(--transition);
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .subtema-chip:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(30, 58, 138, 0.05);
+            transform: translateY(-1px);
+        }
+        .subtema-chip.active {
+            background: var(--primary-gradient);
+            color: var(--white);
+            border-color: transparent;
+            box-shadow: var(--shadow-md);
+        }
+        .subtema-chip.chip-all {
+            border-color: var(--gray-400);
+            font-weight: 600;
+        }
+        .subtema-chip.chip-all.active {
+            background: var(--gray-700);
+            color: var(--white);
+            border-color: transparent;
+        }
+
+        /* ── Subtema activo banner ── */
+        .subtema-banner {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(135deg, rgba(30,58,138,0.07) 0%, rgba(13,148,136,0.07) 100%);
+            border: 1px solid rgba(30, 58, 138, 0.15);
+            border-left: 4px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            padding: 14px 20px;
+            margin-bottom: 28px;
+            animation: fadeInUp 0.4s ease-out;
+        }
+        .subtema-banner .banner-icon { font-size: 1.4rem; }
+        .subtema-banner .banner-text {
+            font-size: 0.95rem;
+            color: var(--gray-700);
+        }
+        .subtema-banner .banner-text strong { color: var(--primary-color); }
+
+        /* ── Grid de secciones de contenido ── */
         .section-title {
             text-align: center;
-            margin: 40px 0 30px 0;
-            font-size: 1.8rem;
+            margin: 40px 0 24px;
+            font-size: 1.5rem;
             color: var(--primary-color);
             font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .content-columns {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 32px;
+            align-items: start;
+            margin-bottom: 40px;
+        }
+
+        /* ── Video cards ── */
+        .video-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .video-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: var(--transition);
+        }
+        .video-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+        }
+        .video-thumb-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 */
+            background: var(--gray-100);
+            overflow: hidden;
+        }
+        .video-thumb-wrapper iframe {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border: none;
+        }
+        .video-thumb-placeholder {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-400);
+            font-size: 2.5rem;
+        }
+        .video-info {
+            padding: 16px 20px;
+        }
+        .video-title {
+            font-weight: 600;
+            color: var(--gray-800);
+            font-size: 0.9rem;
+            line-height: 1.45;
+        }
+
+        /* ── PDF / Recurso cards ── */
+        .pdf-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .pdf-card {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow-lg);
+            border-left: 4px solid var(--accent-color);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .pdf-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-left-color: var(--primary-color);
+        }
+        .pdf-card-icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+        .pdf-card-title {
+            font-weight: 700;
+            color: var(--gray-800);
+            font-size: 0.92rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .pdf-card-desc {
+            font-size: 0.82rem;
+            color: var(--gray-500);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .pdf-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            background: var(--accent-gradient);
+            color: var(--white);
+            border-radius: var(--border-radius);
+            font-size: 0.83rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            align-self: flex-start;
+        }
+        .pdf-card-link:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            opacity: 0.92;
+        }
+        .empty-recursos {
+            background: var(--white);
+            border-radius: var(--border-radius-lg);
+            padding: 40px 24px;
+            box-shadow: var(--shadow-md);
+            text-align: center;
+            color: var(--gray-400);
+        }
+        .empty-recursos .icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .empty-recursos p { font-size: 0.9rem; line-height: 1.5; }
+
+        /* ── Etiquetas de columna ── */
+        .col-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+        .col-header-icon { font-size: 1.5rem; }
+        .col-header-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .content-columns {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 600px) {
+            .welcome-section h2 { font-size: 1.5rem; }
+            .section-title { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
 <div class="container glass-effect">
+
+    {# ── Sección de bienvenida ── #}
     <div class="welcome-section">
         <h2>👋 ¡Hola {{ nombre }}!</h2>
         <div class="topic-badge">{{ tema }}</div>
@@ -101,31 +319,118 @@
         </div>
     </div>
 
-    <h2 class="section-title">🎥 Videos Educativos</h2>
-    <div class="video-container">
-        {% for titulo, link in videos %}
-            <div class="video-card">
-                {% if link and 'v=' in link %}
-                <iframe src="https://www.youtube.com/embed/{{ link.split('v=')[-1].split('&')[0] }}"
-                        allowfullscreen
-                        loading="lazy">
-                </iframe>
-                {% else %}
-                <div class="video-info">
-                    <div style="padding: 40px; text-align: center; color: var(--gray-500);">
-                        <div style="font-size: 3rem; margin-bottom: 15px;">🎬</div>
-                        <p>{{ titulo }}</p>
+    {# ── Selector de subtemas ── #}
+    {% if subtemas_lista %}
+    <div class="subtemas-wrapper">
+        <h3>📌 Selecciona un subtema</h3>
+        <div class="subtemas-bar" id="subtemas-bar">
+            {# Chip "Todos" #}
+            <a class="subtema-chip chip-all {% if not subtema %}active{% endif %}"
+               href="{{ url_for('visual', nombre=nombre, tema=tema) }}">
+                🔍 Todos
+            </a>
+            {% for st in subtemas_lista %}
+            <a class="subtema-chip {% if subtema == st %}active{% endif %}"
+               href="{{ url_for('visual', nombre=nombre, tema=tema, subtema=st) }}">
+                {{ st }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {# ── Banner de subtema activo ── #}
+    {% if subtema %}
+    <div class="subtema-banner">
+        <span class="banner-icon">🎯</span>
+        <div class="banner-text">
+            Mostrando contenido específico para: <strong>{{ subtema }}</strong>
+            — Videos y recursos filtrados por este subtema.
+        </div>
+    </div>
+    {% endif %}
+
+    {# ── Columnas: Videos | PDFs ── #}
+    <div class="content-columns">
+
+        {# Columna 1: Videos #}
+        <div class="videos-col">
+            <div class="col-header">
+                <span class="col-header-icon">🎥</span>
+                <span class="col-header-title">Videos Educativos</span>
+            </div>
+            <div class="video-container">
+                {% for titulo, link in videos %}
+                <div class="video-card">
+                    <div class="video-thumb-wrapper">
+                        {% if link and 'v=' in link %}
+                        <iframe src="https://www.youtube.com/embed/{{ link.split('v=')[-1].split('&')[0] }}"
+                                allowfullscreen
+                                loading="lazy"
+                                title="{{ titulo }}">
+                        </iframe>
+                        {% else %}
+                        <div class="video-thumb-placeholder">
+                            <div>🎬</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">{{ titulo }}</div>
                     </div>
                 </div>
-                {% endif %}
-                <div class="video-info">
-                    <div class="video-title">{{ titulo }}</div>
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </div>
+        </div>
 
-    <div class="action-buttons" style="margin-top: 40px;">
+        {# Columna 2: PDFs y Recursos #}
+        <div class="pdfs-col">
+            <div class="col-header">
+                <span class="col-header-icon">📄</span>
+                <span class="col-header-title">Lecturas y PDFs</span>
+            </div>
+
+            {% if recursos %}
+            <div class="pdf-container">
+                {% for r in recursos %}
+                <div class="pdf-card">
+                    <div class="pdf-card-icon">📑</div>
+                    <div class="pdf-card-title">{{ r.titulo }}</div>
+                    {% if r.descripcion %}
+                    <div class="pdf-card-desc">{{ r.descripcion }}</div>
+                    {% endif %}
+                    {% if r.url %}
+                    <a class="pdf-card-link"
+                       href="{{ r.url }}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        🔗 Abrir recurso
+                    </a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            {% elif subtema %}
+            <div class="empty-recursos">
+                <div class="icon">🔍</div>
+                <p>No se encontraron recursos para <strong>{{ subtema }}</strong> en este momento.<br>
+                Intenta buscar manualmente en Google Scholar.</p>
+            </div>
+
+            {% else %}
+            <div class="empty-recursos">
+                <div class="icon">👆</div>
+                <p>Selecciona un subtema de la barra superior para ver<br>
+                <strong>PDFs y lecturas académicas</strong> específicas.</p>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>{# /content-columns #}
+
+    {# ── Botones finales ── #}
+    <div class="action-buttons" style="margin-top: 10px; margin-bottom: 30px;">
         <a href="{{ url_for('practico', nombre=nombre, tema=tema) }}" class="btn btn-primary">
             ✏️ Continuar con Ejercicios
         </a>
@@ -133,6 +438,7 @@
             🏠 Ir al Inicio
         </a>
     </div>
+
 </div>
 </body>
 </html>
