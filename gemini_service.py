@@ -65,6 +65,83 @@ class BancoPreguntas:
         except (FileNotFoundError, json.JSONDecodeError):
             return {"temas": {}}
 
+    # Mapeo de temas con nombres alternativos → categorías canónicas.
+    # Permite aprovechar mejor el banco cuando el usuario escribe el tema
+    # con un nombre distinto al que está guardado en el JSON.
+    _ALIAS_TEMAS: Dict[str, List[str]] = {
+        "conceptos básicos de estadística": [
+            "Conceptos básicos de estadística",
+            "Fundamentos y Análisis Descriptivo",
+        ],
+        "tipos de variables y escalas de medición": [
+            "Tipos de variables y escalas de medición",
+            "Fundamentos y Análisis Descriptivo",
+        ],
+        "tablas de frecuencia": [
+            "Tablas de frecuencia",
+            "Fundamentos y Análisis Descriptivo",
+        ],
+        "histogramas y polígonos de frecuencia": [
+            "Histogramas y polígonos de frecuencia",
+            "Fundamentos y Análisis Descriptivo",
+        ],
+        "medidas de tendencia central": [
+            "Medidas de tendencia central",
+            "Medidas Estadísticas",
+        ],
+        "media aritmética y ponderada": [
+            "Medidas Estadísticas",
+            "Medidas de tendencia central",
+        ],
+        "mediana y moda": [
+            "Medidas Estadísticas",
+            "Medidas de tendencia central",
+        ],
+        "medidas de dispersión": ["Medidas Estadísticas"],
+        "varianza y desviación estándar": ["Medidas Estadísticas"],
+        "probabilidad básica": ["Fundamentos de Probabilidad"],
+        "distribución normal": ["Distribuciones de Probabilidad"],
+        "distribuciones de probabilidad": ["Distribuciones de Probabilidad"],
+        "muestreo y poblaciones": ["Inferencia Estadística"],
+        "intervalos de confianza": ["Inferencia Estadística"],
+        "pruebas de hipótesis": ["Inferencia Estadística"],
+        "error tipo i y tipo ii": ["Inferencia Estadística"],
+        "regresión lineal simple": ["Modelado y Análisis de Relaciones"],
+        "correlación y coeficiente de pearson": [
+            "Modelado y Análisis de Relaciones",
+        ],
+        "series temporales": ["Modelado y Análisis de Relaciones"],
+        "análisis de varianza (anova)": [
+            "Inferencia Estadística",
+            "Modelado y Análisis de Relaciones",
+        ],
+        "teorema del límite central": [
+            "Inferencia Estadística",
+            "Distribuciones de Probabilidad",
+        ],
+        "eventos independientes y dependientes": ["Fundamentos de Probabilidad"],
+        "diagramas de caja y bigotes": [
+            "Fundamentos y Análisis Descriptivo",
+            "Medidas Estadísticas",
+        ],
+        "coeficiente de variación": ["Medidas Estadísticas"],
+        "distribución binomial": ["Distribuciones de Probabilidad"],
+    }
+
+    @classmethod
+    def _expandir_alias(cls, tema: str) -> List[str]:
+        """Devuelve la lista de nombres canónicos a probar para un tema dado."""
+        nombre = (tema or "").strip()
+        if not nombre:
+            return []
+        candidatos = [nombre]
+        key = nombre.casefold()
+        if key in cls._ALIAS_TEMAS:
+            for alias in cls._ALIAS_TEMAS[key]:
+                if alias not in candidatos:
+                    candidatos.append(alias)
+        return candidatos
+
     def _salvar_cache(self) -> None:
         with _cache_lock:
             try:
@@ -79,33 +156,34 @@ class BancoPreguntas:
     ) -> Optional[List[Dict[str, Any]]]:
         excluir = set(excluir_ids or [])
 
+        # Expandir alias: si el tema ingresado tiene un mapeo a nombres
+        # canónicos del banco, probar cada uno.
+        temas_a_intentar = self._expandir_alias(tema) or [tema]
+
         # Fallback de nivel: si no hay preguntas para el nivel exacto,
         # buscar en el nivel más cercano disponible
         _orden_niveles = ["bachillerato", "universidad", "postgrado"]
         niveles_a_intentar = [nivel]
         if nivel in _orden_niveles:
             idx = _orden_niveles.index(nivel)
-            # Añadir niveles adyacentes como fallback
             if idx > 0:
                 niveles_a_intentar.append(_orden_niveles[idx - 1])
             if idx < len(_orden_niveles) - 1:
                 niveles_a_intentar.append(_orden_niveles[idx + 1])
 
-        for nivel_intento in niveles_a_intentar:
-            banco_tema = self._banco.get("temas", {}).get(tema, {}).get(nivel_intento, [])
-            cache_tema = self._cache.get("temas", {}).get(tema, {}).get(nivel_intento, [])
-            todas = banco_tema + cache_tema
-            # Preferir preguntas no-fallback; si no hay suficientes, incluir fallback también
-            no_fallback = [p for p in todas if not p.get("es_fallback") and p.get("id_estable") not in excluir]
-            fallback_ps = [p for p in todas if p.get("es_fallback") and p.get("id_estable") not in excluir]
+        for tema_intento in temas_a_intentar:
+            for nivel_intento in niveles_a_intentar:
+                banco_tema = self._banco.get("temas", {}).get(tema_intento, {}).get(nivel_intento, [])
+                cache_tema = self._cache.get("temas", {}).get(tema_intento, {}).get(nivel_intento, [])
+                todas = banco_tema + cache_tema
+                no_fallback = [p for p in todas if not p.get("es_fallback") and p.get("id_estable") not in excluir]
+                fallback_ps = [p for p in todas if p.get("es_fallback") and p.get("id_estable") not in excluir]
 
-            if len(no_fallback) >= cantidad:
-                return random_module.sample(no_fallback, cantidad)
-            # Si hay algunas no-fallback pero no suficientes, mezclar
-            if len(no_fallback) + len(fallback_ps) >= cantidad:
-                pool = no_fallback + fallback_ps
-                seleccionadas = random_module.sample(pool, cantidad)
-                return seleccionadas
+                if len(no_fallback) >= cantidad:
+                    return random_module.sample(no_fallback, cantidad)
+                if len(no_fallback) + len(fallback_ps) >= cantidad:
+                    pool = no_fallback + fallback_ps
+                    return random_module.sample(pool, cantidad)
 
         return None
 
