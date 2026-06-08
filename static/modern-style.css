@@ -183,7 +183,8 @@ body {
     border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
 }
 
-.form-container h1 {
+.form-container h1,
+.form-container h2 {
     text-align: center;
     margin-bottom: 24px;
     font-family: 'Playfair Display', 'Lora', Georgia, serif;
@@ -256,7 +257,8 @@ input, select, textarea {
 }
 
 input:focus, select:focus, textarea:focus {
-    outline: none;
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
     background: var(--white);

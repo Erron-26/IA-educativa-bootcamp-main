@@ -23,7 +23,7 @@ from gemini_service import GeminiService
 from datetime import datetime
 
 app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "clave_secreta_demo")
+app.secret_key = os.environ["FLASK_SECRET_KEY"]
 
 _gemini_service = None
 _youtube_cache = {}
@@ -179,6 +179,9 @@ def login():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
+    # Restaurar datos del formulario de un intento anterior (si hubo error)
+    form_data = session.pop("register_form_data", {})
+
     if request.method == "POST":
         email            = request.form.get("email", "").strip()
         password         = request.form.get("password", "")
@@ -188,17 +191,28 @@ def register():
         nivel_educativo  = request.form.get("nivel_educativo", "").strip()
         intereses        = request.form.get("intereses", "estadistica").strip()
 
+        # Guardar datos no-sensibles para repoblar si hay error
+        form_data = {
+            "email":           email,
+            "nombre":          nombre,
+            "edad":            edad_str,
+            "nivel_educativo": nivel_educativo,
+        }
+
         # ── Validar campos básicos ────────────────────────────────
         if not all([email, password, confirm_password, nombre, edad_str]):
             flash("Por favor completa todos los campos.", "error")
+            session["register_form_data"] = form_data
             return redirect(url_for("register"))
 
         if password != confirm_password:
             flash("Las contraseñas no coinciden.", "error")
+            session["register_form_data"] = form_data
             return redirect(url_for("register"))
 
         if len(password) < 6:
             flash("La contraseña debe tener al menos 6 caracteres.", "error")
+            session["register_form_data"] = form_data
             return redirect(url_for("register"))
 
         # ── Validar edad y asignar nivel según criterios ──────────
@@ -206,10 +220,12 @@ def register():
             edad = int(edad_str)
         except ValueError:
             flash("La edad debe ser un número válido.", "error")
+            session["register_form_data"] = form_data
             return redirect(url_for("register"))
 
         if edad < 12:
             flash("La edad mínima para registrarse es 12 años.", "error")
+            session["register_form_data"] = form_data
             return redirect(url_for("register"))
 
         # Clasificación automática por edad (validación del lado del servidor)
@@ -223,6 +239,7 @@ def register():
             opciones_validas = {"universidad", "posgrado", "otro"}
             if nivel_educativo not in opciones_validas:
                 flash("Por favor selecciona tu nivel educativo.", "warning")
+                session["register_form_data"] = form_data
                 return redirect(url_for("register"))
 
         # ── Mapear nivel_educativo → nivel_academico (usado por Gemini) ──
@@ -263,7 +280,7 @@ def register():
         else:
             flash(f"Error al crear la cuenta: {result['error']}", "error")
 
-    return render_template("register.html")
+    return render_template("register.html", form_data=form_data)
 
 
 @app.route("/perfil")
@@ -278,7 +295,7 @@ def perfil():
             student_data = result["data"]
             session['student_data'] = student_data
         else:
-            flash("Error al cargar datos del perfil.")
+            flash("Error al cargar datos del perfil.", "error")
             return redirect(url_for("index"))
 
     return render_template("perfil.html", student_data=student_data)
@@ -287,7 +304,7 @@ def perfil():
 @app.route("/logout")
 def logout():
     LocalAuth.logout_user()
-    flash("Sesión cerrada exitosamente.")
+    flash("Sesión cerrada exitosamente.", "success")
     return redirect(url_for("login"))
 
 
@@ -312,11 +329,11 @@ def index():
         estilo = request.form.get("estilo")
 
         if not tema or not estilo:
-            flash("⚠️ Por favor completa todos los campos.")
+            flash("⚠️ Por favor completa todos los campos.", "warning")
             return redirect(url_for("index"))
 
         if tema not in _temas_por_nombre:
-            flash("El tema seleccionado no es válido. Selecciona uno de la lista.")
+            flash("El tema seleccionado no es válido. Selecciona uno de la lista.", "error")
             return redirect(url_for("index"))
 
         if estilo == "Visual":
@@ -409,7 +426,7 @@ def practico():
     tema   = request.args.get("tema")
 
     if not tema:
-        flash("⚠️ Tema no especificado.")
+        flash("⚠️ Tema no especificado.", "error")
         return redirect(url_for("index"))
 
     session['tema_actual'] = tema

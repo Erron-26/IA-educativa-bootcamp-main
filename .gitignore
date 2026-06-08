@@ -58,3 +58,10 @@ Thumbs.db
 educativa.db-shm
 educativa.db-wal
 
+# SQLite database (generated at runtime)
+educativa.db
+
+# Claves SSH (nunca versionar)
+ssl
+ssl.pub
+

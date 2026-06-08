@@ -370,7 +370,6 @@
             <a href="{{ url_for('index') }}" class="btn btn-secondary" aria-label="Volver al inicio">
                 🔙 Inicio
             </a>
-            <span class="header-context">Tema: <strong>{{ tema }}</strong></span>
         </div>
         <div class="app-header-right">
             <a href="{{ url_for('perfil') }}" class="btn btn-primary" aria-label="Ver mi perfil">
@@ -429,6 +428,13 @@
 </div>
 
 <script>
+    // ── Escape HTML para prevenir XSS en contenido generado ──────
+    function escHtml(str) {
+        if (!str) return '';
+        var map = {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#x27;'};
+        return String(str).replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
     // ── Sistema de mensajes (reemplaza alert() nativo) ────────────
     const messageStyles = {
         success: {
@@ -707,7 +713,7 @@
                     optionsHtml += `
                         <label class="option" onclick="selectOption(this)">
                             <input type="radio" name="pregunta_${pregunta.id}" value="${key}">
-                            <strong>${key}.</strong> ${value}
+                            <strong>${escHtml(key)}.</strong> ${escHtml(value)}
                         </label>
                     `;
                 }
@@ -715,6 +721,7 @@
             } else if (pregunta.tipo === 'respuesta_abierta') {
                 optionsHtml = `
                     <textarea class="open-response" name="pregunta_${pregunta.id}" 
+                              oninput="updateProgress()"
                               placeholder="Escribe tu reflexión o procedimiento aquí (no afecta la nota final, se comparará con la respuesta del experto)..."></textarea>
                 `;
             }
@@ -727,7 +734,7 @@
                     <span class="question-number">Pregunta ${index + 1}</span>
                     <span class="question-type">${tipoTexto}</span>
                 </div>
-                <div class="question-text">${pregunta.pregunta}</div>
+                <div class="question-text">${escHtml(pregunta.pregunta)}</div>
                 ${optionsHtml}
                 <div class="feedback" id="feedback_${pregunta.id}" style="display:none;"></div>
             `;
@@ -876,19 +883,19 @@
                                 <div style="margin-bottom: 12px;">
                                     <strong>📝 Tu respuesta:</strong>
                                     <div style="background: rgba(59, 130, 246, 0.1); padding: 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid #3b82f6;">
-                                        ${respuestas[preguntas[i].id] || '(No respondida)'}
+                                        ${escHtml(respuestas[preguntas[i].id] || '(No respondida)')}
                                     </div>
                                 </div>
                                 <div>
                                     <strong>💡 Respuesta sugerida:</strong>
                                     <div style="background: rgba(16, 185, 129, 0.1); padding: 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid #10b981;">
-                                        ${r.respuesta_correcta}
+                                        ${escHtml(r.respuesta_correcta)}
                                     </div>
                                 </div>
                                 <div style="margin-top: 12px;">
                                     <strong>🧠 Explicación del experto:</strong>
                                     <div style="background: rgba(249, 115, 22, 0.1); padding: 12px; border-radius: 6px; margin-top: 8px; border-left: 3px solid #f97316;">
-                                        ${r.explicacion}
+                                        ${escHtml(r.explicacion)}
                                     </div>
                                 </div>
                             </div>
@@ -901,7 +908,7 @@
                             <div>
                                 <strong>${r.correcta ? '¡Correcto!' : 'Incorrecto'}</strong>
                                 <div style="margin-top: 4px; font-size: 14px; color: var(--gray-600);">
-                                    ${r.explicacion}
+                                    ${escHtml(r.explicacion)}
                                 </div>
                             </div>
                         `;

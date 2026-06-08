@@ -99,7 +99,7 @@
                     <h3>Información de Acceso</h3>
                     <div class="mb-3">
                         <label>Correo electrónico</label>
-                        <input type="email" name="email" placeholder="tu@email.com" required>
+                        <input type="email" name="email" placeholder="tu@email.com" required value="{{ form_data.get('email', '') }}">
                     </div>
                     <div class="mb-3">
                         <label>Contraseña</label>
@@ -116,7 +116,7 @@
                     <h3>Información del Estudiante</h3>
                     <div class="mb-3">
                         <label>Nombre completo</label>
-                        <input type="text" name="nombre" placeholder="Tu nombre completo" required>
+                        <input type="text" name="nombre" placeholder="Tu nombre completo" required value="{{ form_data.get('nombre', '') }}">
                     </div>
 
                     <!-- Edad → dispara la lógica de nivel -->
@@ -124,7 +124,8 @@
                         <label>Edad</label>
                         <input type="number" id="edad-input" name="edad"
                                placeholder="Tu edad" min="12" max="100" required
-                               autocomplete="off">
+                               autocomplete="off"
+                               value="{{ form_data.get('edad', '') }}">
                     </div>
 
                     <!-- Nivel educativo (controlado por JS) -->
@@ -150,14 +151,14 @@
                             <div id="nivel-select-wrap">
                                 <select id="nivel-select" name="nivel_educativo_manual">
                                     <option value="">Selecciona tu nivel</option>
-                                    <option value="universidad">Universidad</option>
-                                    <option value="posgrado">Posgrado</option>
-                                    <option value="otro">Otro</option>
+                                    <option value="universidad" {% if form_data.get('nivel_educativo') == 'universidad' %}selected{% endif %}>Universidad</option>
+                                    <option value="posgrado" {% if form_data.get('nivel_educativo') == 'posgrado' %}selected{% endif %}>Posgrado</option>
+                                    <option value="otro" {% if form_data.get('nivel_educativo') == 'otro' %}selected{% endif %}>Otro</option>
                                 </select>
                             </div>
 
                             <!-- Campo oculto que siempre se envía al servidor -->
-                            <input type="hidden" id="nivel-hidden" name="nivel_educativo" value="">
+                            <input type="hidden" id="nivel-hidden" name="nivel_educativo" value="{{ form_data.get('nivel_educativo', '') }}">
                         </div>
                     </div>
 
@@ -183,7 +184,7 @@
     </div>
 
     <!-- Mensajes de estado mejorados -->
-    <div id="messageContainer" style="position:fixed;top:20px;right:20px;z:9999;display:none;"></div>
+    <div id="messageContainer" style="position:fixed;top:20px;right:20px;z-index:9999;display:none;"></div>
 
     <script>
     // Sistema de mensajes mejorado
@@ -364,6 +365,9 @@
         // Escuchar cambios en edad
         edadInput.addEventListener('input', actualizarNivel);
         edadInput.addEventListener('change', actualizarNivel);
+
+        // Inicializar nivel si hay edad prefijada (vuelta con error)
+        if (edadInput.value) actualizarNivel();
 
         // Validación antes de enviar
         document.getElementById('registerForm').addEventListener('submit', function (e) {

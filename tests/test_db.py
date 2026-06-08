@@ -62,13 +62,13 @@ def test_login_user_wrong_password():
     LocalAuth.register_user(email, "password123")
     result = LocalAuth.login_user(email, "wrong_password")
     assert result["success"] is False
-    assert "Contraseña incorrecta" in result["error"]
+    assert "Correo electrónico o contraseña incorrectos" in result["error"]
 
 
 def test_login_user_not_found():
     result = LocalAuth.login_user("noexiste@test.com", "any")
     assert result["success"] is False
-    assert "no encontrado" in result["error"].lower()
+    assert "incorrectos" in result["error"].lower()
 
 
 def test_login_strips_whitespace():

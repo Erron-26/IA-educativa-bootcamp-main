@@ -52,11 +52,8 @@ class LocalAuth:
                     (email,)
                 ).fetchone()
 
-            if not row:
-                return {"success": False, "error": "Usuario no encontrado"}
-
-            if not check_password_hash(row["password_hash"], password):
-                return {"success": False, "error": "Contraseña incorrecta"}
+            if not row or not check_password_hash(row["password_hash"], password):
+                return {"success": False, "error": "Correo electrónico o contraseña incorrectos"}
 
             return {
                 "success": True,
