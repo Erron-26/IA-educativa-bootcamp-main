@@ -400,18 +400,18 @@
             </div>
         </div>
 
-        {# Columna 2: PDFs y Recursos #}
+        {# Columna 2: Recursos Educativos #}
         <div class="pdfs-col">
             <div class="col-header">
-                <span class="col-header-icon">📄</span>
-                <span class="col-header-title">Lecturas y PDFs</span>
+                <span class="col-header-icon">📚</span>
+                <span class="col-header-title">Recursos Educativos</span>
             </div>
 
             {% if recursos %}
             <div class="pdf-container">
                 {% for r in recursos %}
                 <div class="pdf-card">
-                    <div class="pdf-card-icon">📑</div>
+                    <div class="pdf-card-icon">📖</div>
                     <div class="pdf-card-title">{{ r.titulo }}</div>
                     {% if r.descripcion %}
                     <div class="pdf-card-desc">{{ r.descripcion }}</div>
@@ -431,15 +431,15 @@
             {% elif subtema %}
             <div class="empty-recursos">
                 <div class="icon">🔍</div>
-                <p>No se encontraron recursos para <strong>{{ subtema }}</strong> en este momento.<br>
-                Intenta buscar manualmente en Google Scholar.</p>
+                <p>No se encontraron recursos educativos para <strong>{{ subtema }}</strong> en este momento.<br>
+                Prueba con otro subtema o consulta la Wikipedia directamente.</p>
             </div>
 
             {% else %}
             <div class="empty-recursos">
                 <div class="icon">👆</div>
                 <p>Selecciona un subtema de la barra superior para ver<br>
-                <strong>PDFs y lecturas académicas</strong> específicas.</p>
+                <strong>recursos educativos</strong> específicos.</p>
             </div>
             {% endif %}
         </div>
